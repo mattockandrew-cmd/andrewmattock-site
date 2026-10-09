@@ -25,8 +25,8 @@
   <script src="linkedin-feed.js?v=mobile-spacing-1" defer></script>
   <link rel="stylesheet" href="cinema-screen.css?v=producer-credit-1">
   <script src="cinema-screen.js" defer></script>
-  <link rel="stylesheet" href="web-experiences.css?v=flow-results-1">
-  <script src="web-experiences.js?v=mobile-spacing-1" defer></script>
+  <link rel="stylesheet" href="web-experiences.css?v=seo-signup-1">
+  <script src="web-experiences.js?v=seo-signup-1" defer></script>
   <link rel="stylesheet" href="mobile-layout.css?v=mobile-spacing-1">
 </head>
 <body id="top">
@@ -67,7 +67,7 @@
         <div class="reel-card web-experiences" data-active-web-flow="demo" role="group" aria-label="Apollo web experiences: contact enrichment, lead qualification, demo booking and SEO signup">
           <div class="reel-image"><div class="card-composition case-web">
             <div class="web-flow-controls" aria-label="Choose a web experience"><button type="button" data-web-flow="demo" aria-pressed="true">Demo flow</button><button type="button" data-web-flow="seo" aria-pressed="false">SEO</button></div>
-            <div class="web-macbook"><div class="web-macbook-display"><div class="web-browser" role="img" aria-label="Animated walkthrough: amattock@figma.com resolves to Andrew Mattock at Figma; contact and company information is enriched, four qualification checks pass, and a qualified lead is routed to a rep’s Chili Piper calendar. The SEO walkthrough starts with a Google search for companies using Cloudflare, clicks an Apollo result, scrolls the company page and opens its signup modal.">
+            <div class="web-macbook"><div class="web-macbook-display"><div class="web-browser" role="img" aria-label="Animated walkthrough: amattock@figma.com resolves to Andrew Mattock at Figma; contact and company information is enriched, four qualification checks pass, and a qualified lead is routed to a rep’s Chili Piper calendar. The SEO walkthrough accepts the signup terms, enters amattock@figma.com and creates an account after a Google search for companies using Cloudflare, clicks an Apollo result, scrolls the company page and opens its signup modal.">
               <div class="web-browser-chrome" aria-hidden="true"><span class="web-browser-dots"><i></i><i></i><i></i></span><span class="web-address web-address-demo">apollo.io/demo</span><span class="web-address web-address-google">google.com</span><span class="web-address web-address-seo">apollo.io/company-list/cloudflare</span><span class="web-browser-plus">+</span></div>
               <div class="web-browser-content" aria-hidden="true">
                 <div class="web-demo-page"><img class="web-demo-image" src="assets/apollo-web-demo.png" width="2948" height="1524" alt="" draggable="false"><div class="web-email-entry"><span class="web-email-placeholder">Company email</span><span class="web-email-value">amattock@figma.com</span></div><div class="web-enrichment-veil"></div>
@@ -107,7 +107,21 @@
                     <div class="web-google-result"><div class="web-google-result-source"><span class="web-google-favicon web-linkedin-favicon">in</span><div><strong>LinkedIn</strong><small>https://www.linkedin.com › company › cloudflare</small></div></div><div class="web-google-result-title">Cloudflare | LinkedIn</div><p>Company updates and people at Cloudflare.</p></div>
                   </div>
                 </div>
-                <div class="web-seo-page"><div class="web-seo-scroll"><img class="web-seo-image" src="assets/apollo-web-seo.png" width="3022" height="10550" alt="" draggable="false"></div><div class="web-signup-shade"></div><div class="web-signup-window"><img src="assets/apollo-web-signup.png" width="3018" height="1498" alt="" draggable="false"></div></div>
+                <div class="web-seo-page"><div class="web-seo-scroll"><img class="web-seo-image" src="assets/apollo-web-seo.png" width="3022" height="10550" alt="" draggable="false"></div><div class="web-signup-shade"></div><div class="web-signup-window" aria-hidden="true">
+                  <span class="web-signup-close">×</span>
+                  <h3 class="web-signup-heading">Unlock lists of companies using Cloudflare</h3>
+                  <p class="web-signup-description">Sign up for free and start using Apollo in seconds!</p>
+                  <div class="web-signup-agreement"><span class="web-signup-checkbox"><svg class="web-signup-check" viewBox="0 0 18 18"><path d="m4 9 3.2 3.2L14 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>By signing up, I agree to Apollo’s <span class="web-signup-link">Terms of Service</span> and <span class="web-signup-link">Privacy Policy</span>.</span></div>
+                  <div class="web-signup-options">
+                    <div class="web-auth-option web-auth-google"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5Z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6C44.4 38.06 46.98 31.92 46.98 24.55Z"/><path fill="#FBBC05" d="M10.53 28.59a14.5 14.5 0 0 1 0-9.18l-7.98-6.19A23.76 23.76 0 0 0 0 24c0 3.87.94 7.53 2.56 10.78Z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.8l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48Z"/></svg><span>Sign up with Google</span></div>
+                    <div class="web-auth-option web-auth-microsoft"><span class="web-microsoft-mark"><i></i><i></i><i></i><i></i></span><span>Sign up with Microsoft</span></div>
+                  </div>
+                  <div class="web-signup-divider"><span>or</span></div>
+                  <div class="web-signup-email-entry"><span class="web-signup-email-placeholder">Work email</span><span class="web-signup-email-value">amattock@figma.com</span></div>
+                  <div class="web-signup-submit"><span class="web-signup-submit-label">Sign up for free <svg viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="web-signup-submit-progress">Creating account…</span></div>
+                  <div class="web-signup-login">Already a member? <span>Login</span></div>
+                  <div class="web-signup-success"><span class="web-signup-success-mark"><svg viewBox="0 0 48 48"><path d="m12 24 8 8 16-17" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><small>ACCOUNT CREATED</small><h3>You’re in.</h3><p>Your Apollo account is ready.</p><span class="web-signup-success-email">amattock@figma.com</span><span class="web-signup-success-next">Start finding your next customer.</span></div>
+                </div></div>
                 <svg class="web-demo-cursor" viewBox="0 0 24 30" aria-hidden="true"><path d="M2 2v23l6-7 5 10 4-2-5-10 10-1Z" fill="#fff" stroke="#202124" stroke-width="1.5" stroke-linejoin="round"/></svg><span class="web-click-ripple"></span>
               </div>
             </div></div><img class="web-macbook-frame" src="assets/macbook-frame.png" width="1536" height="1024" alt="Silver MacBook showing Apollo web experiences" draggable="false"></div>

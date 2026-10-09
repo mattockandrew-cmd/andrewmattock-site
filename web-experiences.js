@@ -69,13 +69,24 @@
       opacity('.web-enrich-next',[[0,0],[11.8,0],[12.1,1],[15.2,1],[16.2,0],[44.2,0]]);
       // Slot selection changes on the click frame; the calendar exits immediately.
       animate('.web-selected-time',[[0,{opacity:0}],[15.4,{opacity:1}],[15.62,{opacity:0}],[44.2,{opacity:0}]],'steps(1,end)');
-      animate('.web-seo-scroll',[[0,{transform:'translateY(0px)'}],[25.2,{transform:'translateY(0px)'}],[27.2,{transform:'translateY(-480px)'}],[28.2,{transform:'translateY(-480px)'}],[30.4,{transform:'translateY(-1280px)'}],[39.2,{transform:'translateY(-1280px)'}],[41.6,{transform:'translateY(0px)'}],[44.2,{transform:'translateY(0px)'}]]);
-      opacity('.web-signup-shade',[[0,0],[31.75,0],[32.05,1],[38.7,1],[39.2,0],[44.2,0]]);
-      animate('.web-signup-window',[[0,{opacity:0,transform:'translateY(14px)'}],[31.75,{opacity:0,transform:'translateY(14px)'}],[32.1,{opacity:1,transform:'translateY(0px)'}],[38.7,{opacity:1,transform:'translateY(0px)'}],[39.2,{opacity:0,transform:'translateY(8px)'}],[44.2,{opacity:0,transform:'translateY(14px)'}]]);
-      const positions=[[0,1060,620],[.75,550,294],[3.4,720,369],[4.6,530,275],[7.9,825,335],[10.7,930,535],[13.3,720,756],[15.05,720,389],[15.4,720,389],[15.5,720,389],[16.4,495,386],[18.65,610,475],[20.4,1030,650],[23,460,454],[24.4,1070,300],[27.5,920,510],[31.05,720,511],[32.8,991,280],[38.8,1100,560],[42.9,1060,620],[44.2,1060,620]];
+      animate('.web-seo-scroll',[[0,{transform:'translateY(0px)'}],[25.2,{transform:'translateY(0px)'}],[27.2,{transform:'translateY(-480px)'}],[28.2,{transform:'translateY(-480px)'}],[30.4,{transform:'translateY(-1280px)'}],[40.4,{transform:'translateY(-1280px)'}],[41.6,{transform:'translateY(0px)'}],[44.2,{transform:'translateY(0px)'}]]);
+      opacity('.web-signup-shade',[[0,0],[31.75,0],[32.05,1],[39.9,1],[40.3,0],[44.2,0]]);
+      animate('.web-signup-window',[[0,{opacity:0,transform:'translateY(14px)'}],[31.75,{opacity:0,transform:'translateY(14px)'}],[32.1,{opacity:1,transform:'translateY(0px)'}],[39.9,{opacity:1,transform:'translateY(0px)'}],[40.3,{opacity:0,transform:'translateY(8px)'}],[44.2,{opacity:0,transform:'translateY(14px)'}]]);
+      // Accept the terms, type the work email, submit, then show completion.
+      animate('.web-signup-checkbox',[[0,{backgroundColor:'#fff',borderColor:'#808080'}],[33.8,{backgroundColor:'#276bff',borderColor:'#276bff'}],[42.7,{backgroundColor:'#fff',borderColor:'#808080'}],[44.2,{backgroundColor:'#fff',borderColor:'#808080'}]],'steps(1,end)');
+      animate('.web-signup-check',[[0,{opacity:0}],[33.8,{opacity:1}],[42.7,{opacity:0}],[44.2,{opacity:0}]],'steps(1,end)');
+      animate('.web-signup-options',[[0,{opacity:.4}],[33.8,{opacity:1}],[42.7,{opacity:.4}],[44.2,{opacity:.4}]],'steps(1,end)');
+      animate('.web-signup-email-entry',[[0,{borderColor:'#ddd'}],[33.8,{borderColor:'#bbb'}],[34.95,{borderColor:'#276bff'}],[37.9,{borderColor:'#ddd'}],[44.2,{borderColor:'#ddd'}]],'steps(1,end)');
+      animate('.web-signup-email-placeholder',[[0,{opacity:1,color:'#ddd'}],[33.8,{opacity:1,color:'#777'}],[35.1,{opacity:0,color:'#777'}],[42.7,{opacity:1,color:'#ddd'}],[44.2,{opacity:1,color:'#ddd'}]],'steps(1,end)');
+      animate('.web-signup-email-value',[[0,{opacity:0,clipPath:'inset(0 100% 0 0)'}],[35.1,{opacity:1,clipPath:'inset(0 100% 0 0)'}],[36.8,{opacity:1,clipPath:'inset(0 0% 0 0)'}],[42.2,{opacity:1,clipPath:'inset(0 0% 0 0)'}],[42.7,{opacity:0,clipPath:'inset(0 100% 0 0)'}],[44.2,{opacity:0,clipPath:'inset(0 100% 0 0)'}]],'steps(18,end)');
+      animate('.web-signup-submit',[[0,{backgroundColor:'#91b5ff'}],[36.8,{backgroundColor:'#276bff'}],[37.9,{backgroundColor:'#214fca'}],[42.7,{backgroundColor:'#91b5ff'}],[44.2,{backgroundColor:'#91b5ff'}]],'steps(1,end)');
+      animate('.web-signup-submit-label',[[0,{opacity:1}],[37.9,{opacity:0}],[42.7,{opacity:1}],[44.2,{opacity:1}]],'steps(1,end)');
+      animate('.web-signup-submit-progress',[[0,{opacity:0}],[37.9,{opacity:1}],[38.75,{opacity:0}],[44.2,{opacity:0}]],'steps(1,end)');
+      opacity('.web-signup-success',[[0,0],[38.75,0],[38.95,1],[40.3,1],[42.7,0],[44.2,0]]);
+      const positions=[[0,1060,620],[.75,550,294],[3.4,720,369],[4.6,530,275],[7.9,825,335],[10.7,930,535],[13.3,720,756],[15.05,720,389],[15.4,720,389],[15.5,720,389],[16.4,495,386],[18.65,610,475],[20.4,1030,650],[23,460,454],[24.4,1070,300],[27.5,920,510],[31.05,720,511],[32.6,650,310],[33.5,551,282],[33.8,551,282],[34.75,615,560],[34.95,615,560],[37.55,720,629],[37.9,720,629],[38.1,720,629],[40.6,1100,560],[42.9,1060,620],[44.2,1060,620]];
       animate('.web-demo-cursor',positions.map(([t,x,y])=>[t,{transform:`translate(${x}px,${y}px)`}]));
-      opacity('.web-demo-cursor',[[0,0],[.5,0],[.75,1],[4,1],[4.4,0],[12.6,0],[13,1],[15.48,1],[15.62,0],[16,0],[16.4,1],[16.7,1],[16.9,0],[18.4,0],[18.65,1],[33.4,1],[33.7,0],[44.2,0]]);
-      const clicks=[[.95,550,294],[3.7,720,369],[13.55,720,756],[15.4,720,389],[16.55,495,386],[18.85,610,475],[23.3,460,454],[31.5,720,511]];
+      opacity('.web-demo-cursor',[[0,0],[.5,0],[.75,1],[4,1],[4.4,0],[12.6,0],[13,1],[15.48,1],[15.62,0],[16,0],[16.4,1],[16.7,1],[16.9,0],[18.4,0],[18.65,1],[38.1,1],[38.5,0],[44.2,0]]);
+      const clicks=[[.95,550,294],[3.7,720,369],[13.55,720,756],[15.4,720,389],[16.55,495,386],[18.85,610,475],[23.3,460,454],[31.5,720,511],[33.8,551,282],[34.95,615,560],[37.9,720,629]];
       const ripple=[[0,{left:'550px',top:'294px',opacity:0,transform:'scale(.65)'}]];
       clicks.forEach(([at,x,y])=>{const releaseAt=at===15.4?at+.2:at+.4;ripple.push([at-.15,{left:`${x}px`,top:`${y}px`,opacity:0,transform:'scale(.65)'}],[at,{left:`${x}px`,top:`${y}px`,opacity:.9,transform:'scale(1)'}],[releaseAt,{left:`${x}px`,top:`${y}px`,opacity:0,transform:'scale(1.4)'}]);});
       ripple.push([44.2,{left:'550px',top:'294px',opacity:0,transform:'scale(.65)'}]);animate('.web-click-ripple',ripple);
