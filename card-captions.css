@@ -1,0 +1,30 @@
+/* One caption component for every project; content may wrap on small screens. */
+.reel-card{--caption-inset:12px;--caption-glass:#1d1a178f;--caption-border:#ffffff24;--caption-ink:#f2ece3;--caption-muted:#f2ece3d9}
+.reel-card .card-caption{position:absolute;left:var(--caption-inset);right:auto;bottom:var(--caption-inset);z-index:4;display:flex;align-items:center;gap:10px;width:max-content;max-width:calc(100% - 2 * var(--caption-inset));min-height:44px;margin:0;padding:7px 12px;border:1px solid var(--caption-border);border-radius:18px;background:var(--caption-glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:none;color:var(--caption-ink);font:400 11px/1.3 -apple-system,BlinkMacSystemFont,Arial,sans-serif;text-align:left;text-decoration:none;white-space:normal;opacity:1;transform:none;transition:none;pointer-events:none}
+.reel-card .card-caption .caption-copy{display:flex;flex-direction:column;justify-content:center;gap:2px;min-width:0;margin:0;color:inherit}
+.reel-card .card-caption .caption-title{display:block;margin:0;color:var(--caption-ink);font:500 11px/1.3 -apple-system,BlinkMacSystemFont,Arial,sans-serif}
+.reel-card .card-caption .caption-detail{display:block;margin:0;color:var(--caption-muted);font:400 10px/1.3 -apple-system,BlinkMacSystemFont,Arial,sans-serif}
+.reel-card .card-caption .caption-brand{display:block;width:56px;flex:0 0 56px;margin:0;color:var(--caption-ink);text-align:center;font-size:13px;line-height:1;opacity:1}
+.reel-card .card-caption .card-caption-logo{display:block;width:56px;height:15px;max-width:none;flex:0 0 56px;margin:0;object-fit:contain;object-position:center;background:none;border-radius:0;filter:invert(1);mix-blend-mode:screen}
+.reel-card .card-caption.campaign-work-link{pointer-events:auto;cursor:pointer}
+.reel-card .card-caption.campaign-work-link:hover{background:#1d1a17ad}
+.reel-card .card-caption.campaign-work-link:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.reel-card .web-result-note{position:static;display:contents;margin:0;padding:0;text-align:left}
+.reel-card .web-result.card-caption{display:none}
+.reel-card.web-experiences[data-active-web-flow=demo] .web-result-demo.card-caption,.reel-card.web-experiences[data-active-web-flow=seo] .web-result-seo.card-caption{display:flex}
+.reel-card .card-play{display:none}
+/* The same glass and type treatment for both functional switchers. */
+.reel-card .phone-controls,.reel-card .web-flow-controls{position:absolute;top:12px;right:12px;z-index:5;display:flex;gap:2px;padding:3px;margin:0;border:1px solid var(--caption-border);border-radius:999px;background:var(--caption-glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:var(--caption-ink);opacity:1;transition:none;pointer-events:auto}
+.reel-card .phone-controls{flex-direction:column}
+.reel-card .phone-controls button,.reel-card .web-flow-controls button{display:grid;place-items:center;min-width:44px;min-height:30px;padding:7px 10px;margin:0;border:0;border-radius:999px;background:none;box-shadow:none;color:var(--caption-ink);font:400 11px/1.2 -apple-system,BlinkMacSystemFont,Arial,sans-serif;cursor:pointer}
+.reel-card .phone-controls button[aria-pressed=true],.reel-card .web-flow-controls button[aria-pressed=true]{background:#fff;color:#242424;box-shadow:none}
+.reel-card .phone-controls button:focus-visible,.reel-card .web-flow-controls button:focus-visible{outline:2px solid #fff;outline-offset:1px}
+@media(max-width:760px){
+ .reel-card .card-caption{width:calc(100% - 2 * var(--caption-inset))}
+ .reel-card .phone-controls button,.reel-card .web-flow-controls button{min-height:44px;min-width:44px}
+}
+/* Reserve caption space without stretching the phone hardware. */
+.reel-card.campaign .campaign-phone{left:50%;top:10px;width:calc((100% - 76px) * 2 / 3);height:calc(100% - 76px);transform:translateX(-50%) rotate(-1deg)}
+@media(max-width:760px){
+ .reel-card.web-experiences .web-macbook{top:calc(50% - 10px)}
+}
