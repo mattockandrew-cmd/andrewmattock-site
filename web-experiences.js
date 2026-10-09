@@ -7,8 +7,10 @@
     const gallery = card.closest('.reel-window');
     const controls = card.querySelectorAll('[data-web-flow]');
     const find = selector => browser.querySelector(selector);
-    const duration = 44200, cycleSeconds = duration / 1000;
-    let animations = [], selectedTime = new URLSearchParams(location.search).get('flow') === 'seo' ? 16200 : 0, scheduled = false;
+    const introSeconds = 4, duration = 48200, cycleSeconds = duration / 1000;
+    const seoStart = (15.62 + introSeconds) * 1000, beforeReturn = 46700;
+    const afterPreview = (12.4 + introSeconds) * 1000, seoPreview = (16.2 + introSeconds) * 1000;
+    let animations = [], selectedTime = new URLSearchParams(location.search).get('flow') === 'seo' ? seoPreview : motion.matches ? afterPreview : 0, scheduled = false;
     function shouldPause() {
       if (motion.matches || document.hidden || browser.closest('.media-paused')) return true;
       const r = card.getBoundingClientRect(), v = window.innerWidth <= 760 ? {left:0,top:0,right:window.innerWidth,bottom:window.innerHeight} : gallery.getBoundingClientRect();
@@ -23,10 +25,13 @@
         if (paused) animation.pause();
         else if (animation.playState !== 'running') animation.play();
       });
-      const phase = current % duration >= 15400 && current % duration < 42500 ? 'seo' : 'demo';
+      const time = current % duration;
+      const phase = time >= seoStart && time < beforeReturn ? 'seo' : 'demo';
+      const stage = time < introSeconds * 1000 + 175 || time >= beforeReturn ? 'before' : 'after';
       controls.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.webFlow === phase)));
       browser.dataset.flow = phase;
       card.dataset.activeWebFlow = phase;
+      card.dataset.croStage = stage;
     }
     function layout() {
       scheduled = false;
@@ -34,12 +39,20 @@
       browser.style.setProperty('--web-scale', String(display.clientWidth/1440));
       const progress = animations[0] ? Number(animations[0].currentTime) % duration : selectedTime;
       animations.forEach(animation => animation.cancel()); animations = [];
-      function animate(selector, frames, ease = 'cubic-bezier(.22,1,.36,1)') {
-        const animation = find(selector).animate(frames.map(([at,properties]) => ({...properties,offset:at/cycleSeconds,easing:ease})),{duration,iterations:Infinity});
+      function animate(selector, frames, ease = 'cubic-bezier(.22,1,.36,1)', offsetIntro = true) {
+        // Keep every existing click and response together after the Before view.
+        const timeline = offsetIntro ? [[0,frames[0][1]],...frames.map(([at,properties])=>[at+introSeconds,properties])] : frames;
+        const animation = find(selector).animate(timeline.map(([at,properties]) => ({...properties,offset:at/cycleSeconds,easing:ease})),{duration,iterations:Infinity});
         animation.currentTime = progress; animations.push(animation);
       }
       function opacity(selector,frames) { animate(selector, frames.map(([time,opacity]) => [time,{opacity}])); }
-      opacity('.web-demo-page',[[0,1],[13.8,1],[14.2,0],[42.2,0],[42.7,1],[44.2,1]]);
+      animate('.web-before-page',[[0,{opacity:1}],[4,{opacity:1}],[4.35,{opacity:0}],[46.2,{opacity:0}],[46.7,{opacity:1}],[48.2,{opacity:1}]],'cubic-bezier(.22,1,.36,1)',false);
+      // Cross out the original six-field form, then reveal its one-email replacement.
+      // Reset the marks while hidden so each loop starts with a clean original page.
+      [ ['.web-cro-scribble-main',2.6,3.45], ['.web-cro-scribble-cross',3.2,3.7] ].forEach(([selector,start,end]) => {
+        animate(selector,[[0,{strokeDashoffset:100}],[start,{strokeDashoffset:100}],[end,{strokeDashoffset:0}],[46.19,{strokeDashoffset:0}],[46.2,{strokeDashoffset:100}],[48.2,{strokeDashoffset:100}]],'linear',false);
+      });
+      animate('.web-demo-page',[[0,{opacity:0}],[4,{opacity:0}],[4.35,{opacity:1}],[17.8,{opacity:1}],[18.2,{opacity:0}],[48.2,{opacity:0}]],'cubic-bezier(.22,1,.36,1)',false);
       opacity('.web-calendar-page',[[0,0],[13.8,0],[14.2,1],[15.4,1],[15.62,0],[44.2,0]]);
       opacity('.web-seo-page',[[0,0],[23.6,0],[23.9,1],[42.2,1],[42.7,0],[44.2,0]]);
       opacity('.web-google-home',[[0,0],[15.4,0],[15.62,1],[19,1],[19.3,0],[44.2,0]]);
@@ -94,21 +107,28 @@
       sync();
     }
     function scheduleLayout() { if (!scheduled) { scheduled=true; requestAnimationFrame(layout); } }
+    function seek(time) {
+      selectedTime = time;
+      animations.forEach(animation=>{animation.currentTime=selectedTime;});sync();
+    }
     controls.forEach(button => {
       button.addEventListener('pointerdown',event=>event.stopPropagation());
       button.addEventListener('click',()=>{
-        selectedTime=button.dataset.webFlow==='seo'?16200:0;
-        animations.forEach(animation=>{animation.currentTime=selectedTime;});sync();
+        seek(button.dataset.webFlow==='seo'?seoPreview:motion.matches?afterPreview:0);
       });
     });
     new ResizeObserver(scheduleLayout).observe(display);
     browser.querySelectorAll('img').forEach(img=>img.addEventListener('load',scheduleLayout,{once:true}));
     if ('IntersectionObserver' in window) new IntersectionObserver(sync, {threshold:0}).observe(card);
-    controllers.push({sync});scheduleLayout();
+    controllers.push({sync,motionChanged(){
+      if (!motion.matches) { sync(); return; }
+      const time = Number(animations[0]?.currentTime || selectedTime) % duration;
+      seek(time >= seoStart && time < beforeReturn ? seoPreview : afterPreview);
+    }});scheduleLayout();
   });
   function syncAll(){controllers.forEach(controller=>controller.sync());}
   document.addEventListener('portfolio:motionchange',syncAll);
   document.addEventListener('visibilitychange',syncAll);
   document.addEventListener('scroll',syncAll,{passive:true});
-  motion.addEventListener('change',syncAll);
+  motion.addEventListener('change',()=>controllers.forEach(controller=>controller.motionChanged()));
 })();

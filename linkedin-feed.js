@@ -1,6 +1,8 @@
 (() => {
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
   const controllers = [];
+  const notificationControllers = [];
+  const connectionNotification = {unlocked:false,read:false};
   document.querySelectorAll('.linkedin-app').forEach(app => {
     const screen = app.parentElement;
     const viewport = app.querySelector('.li-feed-viewport');
@@ -42,12 +44,80 @@
     const taskTap = app.querySelector('.onboarding-task-tap');
     let animations = [], scheduled = false;
     const inCard = app.closest('.reel-card');
+    const campaignCaption = inCard?.querySelector('.campaign-work-link');
+    const onboardingCaption = inCard?.querySelector('.apollo-onboarding-caption');
+    if (inCard) inCard.dataset.phoneCaption = 'auto';
     const inScene = app.closest('.scene');
     const hardware = screen.closest('.campaign-phone, .phone') || screen;
     const interactionRoot = inCard?.querySelector('.case-campaign') || hardware;
     const controls = inCard?.querySelectorAll('.phone-controls button') || [];
     const taskButton = app.querySelector('.onboarding-task-button');
     const isClone = inCard?.dataset.clone === 'true';
+    const notificationButton = app.querySelector('.li-notification-button');
+    const notificationBadge = app.querySelector('.li-notification-badge');
+    const connectionPrompt = app.querySelector('.li-notification-dialog');
+    const connectionClose = app.querySelector('.li-notification-close');
+    const connectionLink = app.querySelector('.li-notification-connect');
+    let connectionOpen = false;
+    function renderNotification() {
+      if (!notificationButton) return;
+      const unread = connectionNotification.unlocked && !connectionNotification.read;
+      notificationBadge.hidden = !unread;
+      notificationButton.setAttribute('aria-label',unread ? 'Notifications, 1 unread. Connect with Andrew on LinkedIn' : 'Notifications. Connect with Andrew on LinkedIn');
+      notificationButton.setAttribute('aria-expanded',String(connectionOpen));
+    }
+    function notificationTabStops(feedVisible) {
+      if (!notificationButton) return;
+      notificationButton.tabIndex = feedVisible && !isClone ? 0 : -1;
+      connectionClose.tabIndex = connectionLink.tabIndex = feedVisible && connectionOpen && !isClone ? 0 : -1;
+    }
+    function unlockNotification() {
+      if (connectionNotification.unlocked) return;
+      connectionNotification.unlocked = true;
+      notificationControllers.forEach(controller=>controller.renderNotification());
+    }
+    function closeConnection(returnFocus = false) {
+      if (!connectionOpen) return;
+      connectionOpen = false;
+      connectionPrompt.hidden = true;
+      app.classList.remove('is-linkedin-prompt-open');
+      renderNotification();
+      notificationTabStops(app.dataset.phoneView === 'feed');
+      if (returnFocus && !isClone) notificationButton.focus({preventScroll:true});
+      resumeAfterTouch();
+    }
+    function openConnection() {
+      if (!connectionPrompt) return;
+      enterManual('feed');
+      connectionOpen = true;
+      connectionNotification.read = true;
+      clearTimeout(touchResumeTimer);
+      app.classList.add('is-linkedin-prompt-open');
+      connectionPrompt.hidden = false;
+      notificationControllers.forEach(controller=>controller.renderNotification());
+      notificationTabStops(true);
+      if (!isClone) connectionLink.focus({preventScroll:true});
+    }
+    if (notificationButton) {
+      connectionPrompt.id = `portfolio-linkedin-notification-${notificationControllers.length+1}`;
+      notificationButton.setAttribute('aria-controls',connectionPrompt.id);
+      notificationControllers.push({renderNotification});
+      renderNotification();
+      notificationTabStops(true);
+      [notificationButton,connectionClose,connectionLink].forEach(control=>control.addEventListener('pointerdown',event=>{
+        suppressDragClick = false;
+        keyboardFocus = false;
+        if (event.pointerType === 'touch') { touchSession = touchActive = true; clearTimeout(touchResumeTimer); }
+        event.stopPropagation();
+      }));
+      notificationButton.addEventListener('click',event=>{event.stopPropagation();openConnection();});
+      connectionClose.addEventListener('click',event=>{event.stopPropagation();closeConnection(true);});
+      connectionLink.addEventListener('click',()=>closeConnection(false));
+      connectionPrompt.addEventListener('keydown',event=>{
+        event.stopPropagation();
+        if (event.key === 'Escape') {event.preventDefault();closeConnection(true);}
+      });
+    }
     let manual = false, pointerInside = false, keyboardFocus = false;
     let touchResumeTimer = null, touchSession = false, touchActive = false;
     let feedTimeline = [], mailTimeline = [], sequenceTimes = {};
@@ -86,8 +156,13 @@
       if (matrix) return Number(matrix[2].split(',')[matrix[1] ? 13 : 5]) || 0;
       return Number(value.match(/translateY\((-?[\d.]+)px\)/)?.[1]) || 0;
     }
+    function setActiveControl(view) {
+      controls.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.phoneView === (view === 'feed' ? 'feed' : 'email'))));
+    }
     function updateControls(view) {
-      controls.forEach(button => button.setAttribute('aria-pressed', String(manual && (button.dataset.phoneView === 'email' ? view !== 'feed' : view === 'feed'))));
+      if (inCard) inCard.dataset.phoneCaption = view === 'email' && selectedEmailId === 'apollo' ? 'onboarding' : 'campaign';
+      notificationTabStops(view === 'feed');
+      setActiveControl(view);
       viewport.tabIndex = view === 'feed' && !isClone ? 0 : -1;
       mailViewport.tabIndex = view === 'email' && !isClone ? 0 : -1;
       taskButton.tabIndex = isClone ? -1 : 0;
@@ -116,7 +191,9 @@
         taskButton.setAttribute('aria-pressed', artwork.dataset.taskComplete);
       }
       view ||= app.dataset.phoneView || 'feed';
+      if (view !== 'feed') closeConnection(false);
       manual = true;
+      unlockNotification();
       animations.forEach(animation => animation.pause());
       app.dataset.phoneView = view;
       app.classList.add('is-interacting');
@@ -146,13 +223,13 @@
     }
     function resumeAfterTouch() {
       clearTimeout(touchResumeTimer);
-      if (!manual || !touchSession || touchActive || motion.matches) return;
+      if (!manual || !touchSession || touchActive || motion.matches || connectionOpen) return;
       touchResumeTimer = setTimeout(() => {
         if (manual && !touchActive && !keyboardFocus) exitManual();
       }, 5000);
     }
     function exitManual() {
-      if (!manual || phoneDrag) return;
+      if (!manual || phoneDrag || connectionOpen) return;
       clearTimeout(touchResumeTimer);
       touchSession = touchActive = false;
       app.classList.remove('has-thumb-pointer');
@@ -162,11 +239,11 @@
         ? timeAtPosition(emailTimelines.get(selectedEmailId) || mailTimeline, mailViewport.scrollTop, selectedEmailId === 'apollo' && artwork.dataset.taskComplete === 'true' ? sequenceTimes.completeAt + .7 : stage.openAt + .4)
         : view === 'inbox' ? stage.inboxAt+.4 : timeAtPosition(feedTimeline, manualFeedY);
       manual = false;
+      if (inCard) inCard.dataset.phoneCaption = 'auto';
       viewport.scrollTop = mailViewport.scrollTop = inboxViewport.scrollTop = 0;
       animations.forEach(animation => { animation.currentTime = time * 1000; });
       app.classList.remove('is-interacting');
       interactionRoot.classList.remove('is-phone-interacting');
-      controls.forEach(button => button.setAttribute('aria-pressed', 'false'));
       viewport.tabIndex = isClone ? -1 : 0;
       mailViewport.tabIndex = inboxViewport.tabIndex = backButton.tabIndex = -1;
       emailRows.forEach(row => { row.tabIndex = -1; });
@@ -199,6 +276,7 @@
       keyboardFocus = false;
       enterManual();
       placeThumb(event);
+      if (connectionOpen || event.target?.closest('.li-notification-button, .li-notification-dialog')) {event.stopPropagation();return;}
       if (event.button !== 0 || event.pointerType === 'touch') return;
       const region = app.dataset.phoneView === 'email' ? mailViewport : app.dataset.phoneView === 'inbox' ? inboxViewport : viewport;
       phoneDrag = {
@@ -256,12 +334,14 @@
     }, true);
     interactionRoot.addEventListener('focusin', event => {
       keyboardFocus = !pointerInside;
-      if (event.target.closest('.li-feed-viewport')) enterManual('feed');
+      if (event.target.closest('.li-notification-button, .li-notification-dialog')) enterManual('feed');
+      else if (event.target.closest('.li-feed-viewport')) enterManual('feed');
       else if (event.target.closest('.gmail-mail-viewport')) enterManual('email');
       else if (event.target.closest('.gmail-inbox-content')) enterManual('inbox');
     });
     interactionRoot.addEventListener('focusout', event => {
       if (!interactionRoot.contains(event.relatedTarget)) {
+        closeConnection(false);
         keyboardFocus = false;
         if (!pointerInside) exitManual();
       }
@@ -273,7 +353,7 @@
       if (event.pointerType === 'touch') { touchActive = false; resumeAfterTouch(); }
     }, {passive:true}));
     document.addEventListener('pointerdown', event => {
-      if (manual && !interactionRoot.contains(event.target)) exitManual();
+      if (manual && !interactionRoot.contains(event.target)) {closeConnection(false);exitManual();}
     });
     controls.forEach(button => {
       button.addEventListener('pointerdown', event => {
@@ -281,7 +361,7 @@
         if (event.pointerType === 'touch') { touchSession = touchActive = true; clearTimeout(touchResumeTimer); }
         event.stopPropagation();
       });
-      button.addEventListener('click', () => enterManual(button.dataset.phoneView === 'email' ? 'inbox' : 'feed'));
+      button.addEventListener('click', () => {closeConnection(false);enterManual(button.dataset.phoneView === 'email' ? 'inbox' : 'feed');});
     });
     emailRows.forEach(row => row.addEventListener('click', () => {
       enterManual('inbox');
@@ -316,8 +396,8 @@
       taskButton.setAttribute('aria-pressed', artwork.dataset.taskComplete);
       taskButton.setAttribute('aria-label', artwork.dataset.taskComplete === 'true' ? 'Mark Link your mailbox incomplete' : 'Mark Link your mailbox complete');
     });
-    function shouldPause() {
-      if (motion.matches || document.hidden || app.closest('.media-paused, .is-paused')) return true;
+    function isUnavailable() {
+      if (document.hidden) return true;
       if (inScene && !inScene.classList.contains('is-active')) return true;
       if (inCard) {
         const r = inCard.getBoundingClientRect();
@@ -326,13 +406,19 @@
       }
       return false;
     }
+    function shouldPause() {
+      return motion.matches || Boolean(app.closest('.media-paused, .is-paused')) || isUnavailable();
+    }
     function sync() {
       if (!animations.length) return;
+      if (manual && connectionOpen && isUnavailable()) {closeConnection(false);exitManual();}
       if (manual && touchSession && !motion.matches && shouldPause()) exitManual();
       if (manual) { animations.forEach(animation => animation.pause()); return; }
       const paused = shouldPause();
+      notificationTabStops(!isUnavailable() && Number(getComputedStyle(linkedin).opacity) > .5 && Number(getComputedStyle(gmail).opacity) < .5);
       const current = motion.matches ? 0 : Number(animations[0].currentTime || 0);
       const seconds = Number(current) % Number(animations[0].effect.getTiming().duration) / 1000;
+      setActiveControl(seconds >= sequenceTimes.switchAt + 2.35 && seconds < sequenceTimes.returnAt + .35 ? 'email' : 'feed');
       const stage = [...emailStages.values()].find(stage => seconds >= stage.inboxAt && seconds <= stage.closeAt + .3);
       if (stage) selectedEmailId = stage.id;
       animations.forEach(animation => {
@@ -394,9 +480,9 @@
       const progress = prior ? (Number(prior.currentTime) % Number(prior.effect.getTiming().duration)) / Number(prior.effect.getTiming().duration) : 0;
       animations.forEach(animation => animation.cancel());
       animations = [];
-      function animate(element, frames) {
+      function animate(element, frames, easing = 'cubic-bezier(.22,1,.36,1)') {
         const animation = element.animate(frames.map(([at, properties]) => ({
-          ...properties, offset: at / total, easing: 'cubic-bezier(.22,1,.36,1)'
+          ...properties, offset: at / total, easing
         })), {duration, iterations: Infinity});
         if (emailBodies.includes(element) && frames[0][1].transform) {
           const timeline = frames.map(([time,props]) => ({time,y:-Number(props.transform.match(/translateY\((-?[\d.]+)px\)/)?.[1]||0)}));
@@ -451,13 +537,19 @@
       const focusPan = Math.max(0, Math.min(emailPan, artwork.offsetTop + taskCenter - mailViewport.clientHeight * .52));
       const completeAt = openAt + 5.7;
       const resetAt = originalCloseAt + .4;
-      sequenceTimes = {openAt, completeAt, returnAt};
+      sequenceTimes = {switchAt, openAt, completeAt, returnAt};
       animate(mailContent, [[0,{transform:'translateY(0px)'}],[openAt+3.2,{transform:'translateY(0px)'}],[openAt+4.5,{transform:`translateY(${-focusPan}px)`}],[openAt+7.2,{transform:`translateY(${-focusPan}px)`}],[openAt+13.4,{transform:`translateY(${-emailPan}px)`}],[originalCloseAt+.3,{transform:`translateY(${-emailPan}px)`}],[originalCloseAt+.4,{transform:'translateY(0px)'}],[total,{transform:'translateY(0px)'}]]);
       animate(taskTap, [[0,{opacity:0,transform:'scale(.7)'}],[completeAt-.65,{opacity:0,transform:'scale(.7)'}],[completeAt-.4,{opacity:1,transform:'scale(1)'}],[completeAt,{opacity:0,transform:'scale(1.35)'}],[total,{opacity:0,transform:'scale(1.35)'}]]);
       animate(completedTask, [[0,{opacity:0}],[completeAt,{opacity:0}],[completeAt+.2,{opacity:1}],[originalCloseAt+.3,{opacity:1}],[resetAt,{opacity:0}],[total,{opacity:0}]]);
       animate(taskIconFade, [[0,{opacity:0}],[completeAt,{opacity:0}],[completeAt+.2,{opacity:.65}],[originalCloseAt+.3,{opacity:.65}],[resetAt,{opacity:0}],[total,{opacity:0}]]);
       animate(taskStrike, [[0,{transform:'scaleX(0)'}],[completeAt+.15,{transform:'scaleX(0)'}],[completeAt+.55,{transform:'scaleX(1)'}],[originalCloseAt+.3,{transform:'scaleX(1)'}],[resetAt,{transform:'scaleX(0)'}],[total,{transform:'scaleX(0)'}]]);
       animate(taskCheck, [[0,{strokeDashoffset:'1'}],[completeAt+.3,{strokeDashoffset:'1'}],[completeAt+.65,{strokeDashoffset:'0'}],[originalCloseAt+.3,{strokeDashoffset:'0'}],[resetAt,{strokeDashoffset:'1'}],[total,{strokeDashoffset:'1'}]]);
+      if (campaignCaption && onboardingCaption) {
+        const shown = {opacity:1,visibility:'visible'}, hidden = {opacity:0,visibility:'hidden'};
+        // The result belongs to the Apollo email, including when the reel is stationary.
+        animate(onboardingCaption,[[0,hidden],[openAt+.4,shown],[originalCloseAt+.3,hidden],[total,hidden]],'steps(1,end)');
+        animate(campaignCaption,[[0,shown],[openAt+.4,hidden],[originalCloseAt+.3,shown],[total,shown]],'steps(1,end)');
+      }
       if (inScene) inScene.dataset.duration = String(Math.ceil(duration));
       app.dataset.feedDuration = String(Math.ceil(duration));
       app.dataset.gmailOpensAt = String(Math.round(openAt * 1000));

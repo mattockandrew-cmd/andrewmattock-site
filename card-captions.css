@@ -1,40 +1,78 @@
-/* One caption component for every project; content may wrap on small screens. */
-.reel-card{--caption-inset:12px;--caption-glass:#1d1a178f;--caption-border:#ffffff24;--caption-ink:#f2ece3;--caption-muted:#f2ece3d9}
-.reel-card .card-caption{position:absolute;left:var(--caption-inset);right:auto;bottom:var(--caption-inset);z-index:4;display:flex;align-items:center;gap:10px;width:max-content;max-width:calc(100% - 2 * var(--caption-inset));min-height:44px;margin:0;padding:7px 12px;border:1px solid var(--caption-border);border-radius:18px;background:var(--caption-glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:none;color:var(--caption-ink);font:400 11px/1.3 -apple-system,BlinkMacSystemFont,Arial,sans-serif;text-align:left;text-decoration:none;white-space:normal;opacity:1;transform:none;transition:none;pointer-events:none}
-.reel-card .card-caption .caption-copy{display:flex;flex-direction:column;justify-content:center;gap:2px;min-width:0;margin:0;color:inherit}
-.reel-card .card-caption .caption-title{display:block;margin:0;color:var(--caption-ink);font:500 11px/1.3 -apple-system,BlinkMacSystemFont,Arial,sans-serif}
-.reel-card .card-caption .caption-detail{display:block;margin:0;color:var(--caption-muted);font:400 10px/1.3 -apple-system,BlinkMacSystemFont,Arial,sans-serif}
-.reel-card .card-caption .caption-brand{display:block;width:56px;flex:0 0 56px;margin:0;color:var(--caption-ink);text-align:center;font-size:13px;line-height:1;opacity:1}
-.reel-card .card-caption .card-caption-logo{display:block;width:56px;height:15px;max-width:none;flex:0 0 56px;margin:0;object-fit:contain;object-position:center;background:none;border-radius:0;filter:invert(1);mix-blend-mode:screen}
-.reel-card .card-caption.campaign-work-link{pointer-events:auto;cursor:pointer}
-.reel-card .card-caption.campaign-work-link:hover{background:#1d1a17ad}
-.reel-card .card-caption.campaign-work-link:focus-visible{outline:2px solid #fff;outline-offset:3px}
+/* Native wordmarks are sized by their visible lettering, beside one-line results. */
+.reel-card{--caption-inset:12px;--caption-radius:999px;--caption-ink:#242931;--artwork-height:400px;--artwork-ratio:1.51}
+.reel-card.campaign{--artwork-ratio:1}
+.reel-card.figma{--artwork-height:440px;--artwork-ratio:10/11}
+.reel-card.web-experiences{--artwork-height:440px;--artwork-ratio:16/11}
+.hero .reel-card{height:var(--artwork-height)}
+.hero .reel-card .reel-image{display:block}
+.reel-card .reel-artwork{position:relative;width:100%;height:100%;overflow:hidden}
+.reel-card .card-footer{position:absolute;inset:0;z-index:4;background:none;border:0;opacity:0;transform:translateY(6px);transition:opacity .22s ease,transform .22s cubic-bezier(.22,1,.36,1);pointer-events:none}
+.reel-card:is(:hover,:focus-within) .card-footer{opacity:1;transform:none}
+.reel-card .caption-pair{position:absolute;left:var(--caption-inset);right:var(--caption-inset);top:auto;bottom:var(--caption-inset);z-index:4;display:flex;justify-content:space-between;align-items:center;gap:8px;width:auto;max-width:none;min-height:44px;margin:0;padding:0 10px;border:1px solid #ffffffb0;border-radius:var(--caption-radius);background:linear-gradient(145deg,#ffffffc2,#ffffffa3);box-shadow:inset 0 1px 0 #ffffffb0,0 5px 18px #19212b1a;backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%);pointer-events:none}
+.reel-card .card-caption{position:static;display:flex;align-items:center;justify-content:center;gap:6px;flex:0 0 auto;min-width:0;width:max-content;max-width:none;min-height:44px;margin:0;padding:0;border:0;border-radius:0;background:none;box-shadow:none;color:var(--caption-ink);font:500 12px/1.2 -apple-system,BlinkMacSystemFont,Arial,sans-serif;text-align:left;text-decoration:none;white-space:nowrap;opacity:1;transform:none;transition:color .16s ease;pointer-events:none}
+.reel-card .card-caption .caption-copy{display:flex;flex-direction:row;align-items:center;gap:6px;min-width:0;margin:0;color:inherit;white-space:nowrap}
+.reel-card .card-caption .caption-title,.reel-card .card-caption .caption-detail{display:inline;min-width:0;margin:0;color:inherit;font:inherit;letter-spacing:0;text-transform:none;white-space:nowrap}
+.reel-card .caption-short{display:none}
+.reel-card .card-caption .caption-brand{display:block;width:52px;flex:0 0 52px;margin:0;color:var(--caption-ink);font-size:12px;line-height:14px;opacity:1}
+.reel-card .card-caption .card-caption-logo{display:block;width:50px;height:13.2px;max-width:100%;flex:0 0 50px;margin:0;object-fit:contain;object-position:center;background:transparent;border-radius:0;filter:brightness(0) opacity(.84);mix-blend-mode:normal}
+.reel-card .card-caption .card-caption-logo--autodesk{width:82px;height:9px;flex:0 0 82px}
+.reel-card .caption-pair--revfest .card-caption-logo{width:70px;height:14.5px;flex:0 0 70px}
+.reel-card .card-caption .card-caption-logo--icon{width:12px;flex:0 0 12px}
+.reel-card .card-caption .card-caption-logo--invision{width:14px;height:14px;flex:0 0 14px}
+.reel-card a.card-caption{pointer-events:none;cursor:pointer}
+.reel-card:is(:hover,:focus-within) a.card-caption{pointer-events:auto}
+.reel-card a.card-caption:hover{background:none;color:#111;text-decoration:underline;text-underline-offset:3px}
+.reel-card a.card-caption:focus-visible{outline:2px solid #1f568f;outline-offset:3px}
+.reel-card .caption-pair.apollo-onboarding-caption{opacity:0;visibility:hidden}
+/* Both labels follow the same manual or animated phone state. */
+.reel-card.campaign[data-phone-caption=onboarding] .caption-pair.apollo-onboarding-caption,.reel-card.campaign[data-phone-caption=campaign] .caption-pair.campaign-work-link{opacity:1!important;visibility:visible!important}
+.reel-card.campaign[data-phone-caption=onboarding] .caption-pair.campaign-work-link,.reel-card.campaign[data-phone-caption=campaign] .caption-pair.apollo-onboarding-caption{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
 .reel-card .web-result-note{position:static;display:contents;margin:0;padding:0;text-align:left}
-.reel-card .web-result.card-caption{display:none}
-.reel-card.web-experiences[data-active-web-flow=demo] .web-result-demo.card-caption,.reel-card.web-experiences[data-active-web-flow=seo] .web-result-seo.card-caption{display:flex}
+.reel-card .caption-pair.web-result{display:none}
+.reel-card.web-experiences[data-active-web-flow=demo] .caption-pair.web-result-demo,.reel-card.web-experiences[data-active-web-flow=seo] .caption-pair.web-result-seo{display:flex}
 .reel-card .card-play{display:none}
-/* The same glass and type treatment for both functional switchers. */
-.reel-card .phone-controls,.reel-card .web-flow-controls{position:absolute;top:12px;right:12px;z-index:5;display:flex;gap:2px;padding:3px;margin:0;border:1px solid var(--caption-border);border-radius:999px;background:var(--caption-glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:var(--caption-ink);opacity:1;transition:none;pointer-events:auto}
-.reel-card .phone-controls{flex-direction:column}
-.reel-card .phone-controls button,.reel-card .web-flow-controls button{display:grid;place-items:center;min-width:44px;min-height:30px;padding:7px 10px;margin:0;border:0;border-radius:999px;background:none;box-shadow:none;color:var(--caption-ink);font:400 11px/1.2 -apple-system,BlinkMacSystemFont,Arial,sans-serif;cursor:pointer}
-.reel-card .phone-controls button[aria-pressed=true],.reel-card .web-flow-controls button[aria-pressed=true]{background:#fff;color:#242424;box-shadow:none}
-.reel-card .phone-controls button:focus-visible,.reel-card .web-flow-controls button:focus-visible{outline:2px solid #fff;outline-offset:1px}
 @media(max-width:760px){
- .reel-card .card-caption{width:calc(100% - 2 * var(--caption-inset))}
- .reel-card .phone-controls button,.reel-card .web-flow-controls button{min-height:44px;min-width:44px}
+ .hero .reel-card:is(.film,.autodesk,.campaign,.web-experiences,.figma){height:auto;aspect-ratio:auto}
+ .hero .reel-card .reel-image{height:auto}
+ .hero .reel-card .reel-artwork{height:auto;flex:none;aspect-ratio:var(--artwork-ratio)}
+ .reel-card .card-caption{font-size:12px}
+ .reel-card .caption-pair{padding-inline:6px;gap:6px}
+ .reel-card .card-footer{opacity:1;transform:none}
+ .reel-card a.card-caption{pointer-events:auto}
+ .reel-card .caption-full{display:none}
+ .reel-card .caption-short{display:inline}
+ .reel-card .caption-pair--autodesk .caption-brand{width:40px;flex-basis:40px;font-size:12px}
 }
-/* Reserve caption space without stretching the phone hardware. */
-.reel-card.campaign .campaign-phone{left:50%;top:10px;width:calc((100% - 76px) * 2 / 3);height:calc(100% - 76px);transform:translateX(-50%);filter:none}
+@media(max-width:400px){.reel-card{--caption-inset:10px}}
+@media(max-width:360px){
+ .reel-card{--caption-inset:10px}
+ .reel-card .caption-pair{gap:6px;padding-inline:4px}
+ .reel-card .card-caption{font-size:10.5px;gap:4px}
+ .reel-card .card-caption .card-caption-logo{width:44px;flex-basis:44px;height:11.6px}
+ .reel-card .card-caption .card-caption-logo--invision{width:12.5px;height:12.5px;flex-basis:12.5px}
+ .reel-card .card-caption .card-caption-logo--autodesk{width:72px;height:7.8px;flex-basis:72px}
+ .reel-card .caption-pair--revfest .card-caption-logo{width:62px;height:12.8px;flex-basis:62px}
+ .reel-card .caption-pair--autodesk .caption-brand{width:34px;flex-basis:34px;font-size:11px}
+}
+/* A small glass shell surrounds 44px pointer targets without enlarging the visible control. */
+.reel-card .card-switcher{position:absolute;top:12px;right:12px;z-index:5;display:flex;flex-direction:row;align-items:center;gap:2px;width:max-content;padding:2px;margin:0;border:1px solid #ffffffb0;border-radius:var(--caption-radius);background:linear-gradient(145deg,#ffffffad,#eaf0f58c);backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%);box-shadow:inset 0 1px 0 #ffffff80,0 2px 7px #19212b10;color:#242931;opacity:1;pointer-events:auto}
+.reel-card .card-switcher button{position:relative;display:grid;place-items:center;align-content:center;flex:0 0 48px;width:48px;min-width:48px;height:28px;padding:5px 7px;margin:0;border:0;border-radius:calc(var(--caption-radius) - 3px);background:none;box-shadow:none;color:#242931;font:500 10px/1.2 -apple-system,BlinkMacSystemFont,Arial,sans-serif;cursor:pointer;transition:background-color .16s ease,box-shadow .16s ease}
+.reel-card .card-switcher button:before{content:'';position:absolute;inset:-8px 0;border-radius:inherit;pointer-events:auto}
+.reel-card .card-switcher button[aria-pressed=true]{background:#ffffffe0;box-shadow:inset 0 1px 0 #fff,0 1px 3px #23304514;color:#1f242c}
+.reel-card .card-switcher button:focus-visible{outline:2px solid #1f568f;outline-offset:2px}
+@media(hover:hover){.reel-card .card-switcher button:hover:not([aria-pressed=true]){background:#ffffff6b}}
+@media(hover:none),(pointer:coarse){.reel-card .card-footer{opacity:1;transform:none}.reel-card a.card-caption{pointer-events:auto}}
+@media(prefers-reduced-motion:reduce){.reel-card .card-switcher button,.reel-card .card-caption,.reel-card .card-footer{transition:none}}
+/* Reserve room for the glass capsule without stretching the phone hardware. */
+.reel-card.campaign .campaign-phone{left:calc(50% - clamp(0px, calc(114px - 25%), 44px));top:10px;width:calc((100% - 76px) * 2 / 3);height:calc(100% - 76px);transform:translateX(-50%);filter:none}
 @media(max-width:760px){
- .reel-card.web-experiences .web-macbook{top:calc(50% - 10px);transform:translate(-50%,-50%)}
+ .reel-card.web-experiences .web-macbook{top:calc(50% - 18px);transform:translate(-50%,-50%)}
 }
+@media(max-width:360px){.reel-card.web-experiences .web-macbook{top:calc(50% - 24px)}}
 
 /* When autoplay is blocked, the native player remains usable inside its frame. */
 .reel-card.autodesk .tv-display video[controls]{pointer-events:auto}
 .reel-card.film .projection-plane iframe.mobile-player{pointer-events:auto}
-.reel-card .card-caption.autodesk-work-link{pointer-events:auto;cursor:pointer}
-.reel-card .card-caption.autodesk-work-link:hover{background:#1d1a17ad}
-.reel-card .card-caption.autodesk-work-link:focus-visible{outline:2px solid #fff;outline-offset:3px}
 
 /* Vector hardware, aligned edges and a separate shadow keep live UI crisp. */
 .reel-card.campaign .campaign-phone:before{content:'';position:absolute;left:16.21%;top:1.3%;width:67.38%;height:97.01%;border-radius:18.55% / 8.6%;box-shadow:0 10px 18px -8px #44545655;pointer-events:none}

@@ -42,7 +42,7 @@
       if (event.pointerType === 'mouse' && !dragging) { hovered = card; card.style.zIndex = '5'; }
     });
     card.addEventListener('pointermove', event => {
-      if (event.pointerType !== 'mouse' || dragging || reduced.matches || event.target.closest('.campaign-phone, .phone-controls, .web-flow-controls')) return;
+      if (event.pointerType !== 'mouse' || dragging || reduced.matches || event.target.closest('.campaign-phone, .card-switcher')) return;
       const r = card.getBoundingClientRect();
       const x = Math.max(-1, Math.min(1, (event.clientX - r.left) / r.width * 2 - 1));
       const y = Math.max(-1, Math.min(1, (event.clientY - r.top) / r.height * 2 - 1));
@@ -65,20 +65,52 @@
   function sceneViewport() {
     return phone.matches ? {left:0,top:0,right:window.innerWidth,bottom:window.innerHeight} : scene.getBoundingClientRect();
   }
+  function scrollCarousel(nextScroll = scene.scrollLeft) {
+    if (phone.matches || !cycleWidth) return;
+    // Keep a full repeat available on either side, even on wider displays.
+    const lower = Math.max(0, (cycleWidth * (cards.length / originals.length - 1) - scene.clientWidth) / 2);
+    const normalized = lower + ((nextScroll - lower) % cycleWidth + cycleWidth) % cycleWidth;
+    const shift = normalized - nextScroll;
+    if (Math.abs(shift) > .01) {
+      const focused = scene.contains(document.activeElement) ? document.activeElement : null;
+      let movedFocus = false;
+      // Recycle whole offscreen repeats so visible players keep their DOM/state.
+      const rotations = Math.round(-shift / cycleWidth) % (cards.length / originals.length);
+      for (let i = 0; i < Math.abs(rotations); i++) {
+        const ordered = [...track.children];
+        const group = rotations > 0 ? ordered.slice(0, originals.length) : ordered.slice(-originals.length);
+        if (focused && group.some(card => card.contains(focused))) movedFocus = true;
+        if (rotations > 0) track.append(...group);
+        else track.prepend(...group);
+      }
+      if (dragging) originScroll += shift;
+      lastScroll = NaN;
+      scene.scrollLeft = normalized;
+      if (movedFocus && document.activeElement !== focused) focused.focus({preventScroll:true});
+      return;
+    }
+    if (Math.abs(scene.scrollLeft - normalized) > .01) scene.scrollLeft = normalized;
+  }
   function measure(center = false) {
     menuButton.textContent = phone.matches ? 'About' : 'Menu';
     if (phone.matches) {
       cycleWidth = 0;
+      scene.style.maxWidth = '';
+      scene.style.marginInline = '';
       scene.scrollLeft = scene.scrollTop = 0;
       if (center && requestedWork === 'web') originals[initialCardIndex].scrollIntoView({block:'start',behavior:'instant'});
     } else {
       const previousScroll = scene.scrollLeft;
       const previousFraction = cycleWidth ? (previousScroll % cycleWidth) / cycleWidth : 0;
-      cycleWidth = cards[originals.length].offsetLeft - cards[0].offsetLeft;
+      const ordered = [...track.children];
+      cycleWidth = ordered[originals.length].offsetLeft - ordered[0].offsetLeft;
+      // Keep enough buffered content even on extremely wide windows.
+      scene.style.maxWidth = `${Math.max(1, cycleWidth * (cards.length / originals.length - 1) - 1)}px`;
+      scene.style.marginInline = 'auto';
       scene.scrollTop = 0;
-      scene.scrollLeft = center
-        ? cards[originals.length + initialCardIndex].offsetLeft + cards[originals.length + initialCardIndex].offsetWidth / 2 - scene.clientWidth / 2
-        : cycleWidth + previousFraction * cycleWidth;
+      scrollCarousel(center
+        ? originals[initialCardIndex].offsetLeft + originals[initialCardIndex].offsetWidth / 2 - scene.clientWidth / 2
+        : cycleWidth + previousFraction * cycleWidth);
     }
     lastScroll = NaN;
     paint();
@@ -180,35 +212,31 @@
     const stopped = phone.matches || reduced.matches || document.hidden || !visible || menu.open || dialog.open || Boolean(track.querySelector('.is-phone-interacting'));
     if (!stopped && !dragging) {
       if (Math.abs(velocity) > .1) {
-        scene.scrollLeft += velocity;
+        scrollCarousel(scene.scrollLeft + velocity);
         velocity *= .94;
       } else if (!hovered && time > idleUntil) {
-        scene.scrollLeft += 2;
+        scrollCarousel(scene.scrollLeft + 2);
       }
     }
-    if (cycleWidth && !dragging && !reduced.matches && !scene.contains(document.activeElement)) {
-      const axis = phone.matches ? "scrollTop" : "scrollLeft";
-      if (scene[axis] < cycleWidth * .5) scene[axis] += cycleWidth;
-      if (scene[axis] > cycleWidth * 1.5) scene[axis] -= cycleWidth;
-    }
+    scrollCarousel();
     paint();
     if (time - lastVideoCheck > 250) { updateVideo(); lastVideoCheck = time; }
     requestAnimationFrame(tick);
   }
   scene.addEventListener('wheel', event => {
-    if (!visible || phone.matches || event.target.closest('.campaign-phone, .phone-controls, .web-flow-controls')) return;
+    if (!visible || phone.matches || event.target.closest('.campaign-phone, .card-switcher')) return;
     if (event.ctrlKey || event.metaKey) return;
     // Vertical scrolling continues to About; horizontal gestures browse the cards.
     if (!event.shiftKey && Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
     event.preventDefault();
     velocity = 0;
     const delta = event.shiftKey && !event.deltaX ? event.deltaY : event.deltaX;
-    scene.scrollLeft += delta * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? scene.clientWidth : 1);
+    scrollCarousel(scene.scrollLeft + delta * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? scene.clientWidth : 1));
     idleUntil = performance.now() + 1400;
     paint();
   }, { passive: false });
   scene.addEventListener('pointerdown', event => {
-    if (event.target.closest('.campaign-phone, .phone-controls, .web-flow-controls')) { dragDistance = 0; return; }
+    if (event.target.closest('.campaign-phone, .card-switcher')) { dragDistance = 0; return; }
     if (event.button !== 0 || phone.matches) return;
     dragging = true; hovered = null; velocity = 0;
     originX = lastPointerX = event.clientX; originScroll = scene.scrollLeft; dragDistance = 0;
@@ -218,7 +246,7 @@
     if (!dragging) return;
     dragDistance = Math.max(dragDistance, Math.abs(event.clientX - originX));
     if (dragDistance > 5 && !scene.hasPointerCapture(event.pointerId)) scene.setPointerCapture(event.pointerId);
-    scene.scrollLeft = originScroll + originX - event.clientX;
+    scrollCarousel(originScroll + originX - event.clientX);
     velocity = Math.max(-32, Math.min(32, lastPointerX - event.clientX));
     lastPointerX = event.clientX;
     paint();
@@ -233,15 +261,15 @@
   scene.addEventListener('pointerup', endDrag);
   scene.addEventListener('pointercancel', event => { endDrag(event); velocity = 0; });
   scene.addEventListener('click', event => {
-    if (event.target.closest('.campaign-phone, .phone-controls, .web-flow-controls')) return;
+    if (event.target.closest('.campaign-phone, .card-switcher')) return;
     if (dragDistance > 5) { event.preventDefault(); event.stopPropagation(); dragDistance = 0; }
   }, true);
-  scene.addEventListener('scroll', paint, {passive:true});
+  scene.addEventListener('scroll', () => { scrollCarousel(); paint(); }, {passive:true});
   scene.addEventListener('keydown', event => {
     if (phone.matches) return;
-    if (event.target.closest('.linkedin-app, .phone-controls, .web-flow-controls')) return;
+    if (event.target.closest('.linkedin-app, .card-switcher')) return;
     if ((!phone.matches && (event.key === 'ArrowRight' || event.key === 'ArrowLeft')) || (phone.matches && (event.key === 'ArrowDown' || event.key === 'ArrowUp'))) {
-      event.preventDefault(); scene[phone.matches ? 'scrollTop' : 'scrollLeft'] += (event.key === 'ArrowRight' || event.key === 'ArrowDown' ? 1 : -1) * 300;
+      event.preventDefault(); scrollCarousel(scene.scrollLeft + (event.key === 'ArrowRight' ? 1 : -1) * 300);
       idleUntil = performance.now() + 3000; velocity = 0; paint();
     }
   });

@@ -8,7 +8,7 @@ body{background:#fff}html{scroll-behavior:smooth}.container{width:calc(100% - 5r
 @keyframes wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(18deg)}40%,80%{transform:rotate(-8deg)}}
 .menu-button{margin-top:10px;background:#f5f5f5;color:#111;border-radius:999px;font:18px/1.2 -apple-system,BlinkMacSystemFont,Arial,sans-serif;padding:14px 22px;min-height:48px}
 .hero{position:relative;height:100svh;min-height:540px;overflow:hidden;background:#fff}
-.reel-window{position:absolute;inset:0;overflow:auto hidden;scrollbar-width:none;overscroll-behavior-x:contain;touch-action:pan-y;outline-offset:-6px}
+.reel-window{position:absolute;inset:0;overflow:auto hidden;scrollbar-width:none;overscroll-behavior-x:contain;overflow-anchor:none;touch-action:pan-y;outline-offset:-6px}
 .reel-window::-webkit-scrollbar{display:none}
 .reel-track{display:flex;align-items:center;gap:120px;padding:calc(20px + clamp(48px,4.2vw,100px)) clamp(48px,4.2vw,100px) clamp(48px,4.2vw,100px);width:max-content;height:100%;box-sizing:border-box}
 .reel-card{display:block;flex:0 0 auto;position:relative;perspective:800px;width:352px;height:440px;cursor:pointer;text-decoration:none;color:#111;will-change:transform;transform-origin:center;--arc-light:0;--tilt-light:0;--rim-rgb:255 255 255;--rim-k:.6}
@@ -92,6 +92,11 @@ dialog{color:#fff;border:none;border-radius:16px;background:#101010;width:min(70
 #about .story .line{min-height:calc(1em * var(--story-leading));row-gap:0;align-items:center}
 #about .story .line+.line{margin-top:0}
 #about .story .pill{--pill-height:1em;--pill-width:1.75em;margin-block:0;vertical-align:-.14em}
+/* Center the supplied Figma lockup; crop its white margins without editing the image. */
+#about .story .pill--figma{--pill-width:2.75em;overflow:hidden;background:#fff;border:1px solid #e7e7e7}
+#about .pill--figma img{position:absolute;left:50%;top:50%;width:112%;height:auto;max-width:none;border-radius:0;transform:translate(-50%,-50%);box-shadow:none}
+#about .pill--figma.is-previewing{box-shadow:0 0 0 2px #fff,0 0 0 3px var(--preview-ring,#aaa)}
+#about .pill--figma.is-previewing img{box-shadow:none}
 @media(max-width:760px){
  #about .story{--story-leading:1.5}
  #about .story .line{min-height:0}

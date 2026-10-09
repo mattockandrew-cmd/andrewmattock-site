@@ -43,11 +43,6 @@
 .linkedin-app.is-interacting[data-phone-view="email"] .gmail-inbox{opacity:0!important;pointer-events:none}
 .linkedin-app.is-interacting[data-phone-view="email"] .gmail-mail-content{transform:none!important;will-change:auto}
 .li-feed-viewport:focus-visible,.gmail-mail-viewport:focus-visible{outline:2px solid #0a66c2;outline-offset:-3px}
-.phone-controls{position:absolute;top:17px;right:13px;z-index:5;display:grid;gap:3px;padding:4px;border:1px solid #ffffff80;border-radius:17px;background:#ffffffb3;backdrop-filter:blur(12px);opacity:0;transition:opacity .2s;pointer-events:none}
-.phone-controls button{border:0;border-radius:13px;background:transparent;color:#4e545c;font:400 10px/1.2 -apple-system,BlinkMacSystemFont,Arial,sans-serif;padding:8px 7px;cursor:pointer;min-width:39px}
-.phone-controls button[aria-pressed="true"]{background:#fff;color:#161616;box-shadow:0 1px 4px #0000000b}
-.campaign:hover .phone-controls,.campaign:focus-within .phone-controls{opacity:1;pointer-events:auto}
-.phone-controls button:focus-visible{outline:2px solid #333;outline-offset:1px}
 .campaign-work-link{pointer-events:auto}
 .onboarding-task-button{display:none;position:absolute;left:20.45%;top:46.4%;width:69.43%;height:4.68%;padding:0;background:transparent;border:0;cursor:pointer}
 .linkedin-app.is-interacting[data-phone-view="email"] .onboarding-task-button{display:block}
@@ -58,8 +53,6 @@
 .linkedin-app.is-interacting .gmail-email-artwork[data-task-complete="true"] .onboarding-task-strike{transform:scaleX(1)!important}
 .linkedin-app.is-interacting .gmail-email-artwork[data-task-complete="true"] .onboarding-task-check path{stroke-dashoffset:0!important}
 .linkedin-app.is-interacting .gmail-email-artwork[data-task-complete="false"] .onboarding-task-complete,.linkedin-app.is-interacting .gmail-email-artwork[data-task-complete="false"] .onboarding-task-icon-fade{opacity:0!important}
-@media(hover:none){.phone-controls{opacity:1;pointer-events:auto}}
-@media(prefers-reduced-motion:reduce){.phone-controls{transition:none}}
 
 .reel-card.campaign{cursor:default}.campaign-work-link{cursor:pointer}.phone.is-phone-interacting{animation-play-state:paused!important}
 
@@ -103,3 +96,23 @@
 .gmail-inbox-label{display:block;position:relative;z-index:2;background:#f8f9ff;padding-bottom:8px}
 .linkedin-app.is-interacting.is-measuring-emails .gmail-mail-content{display:block!important;position:absolute!important;left:0!important;top:0!important;opacity:0!important}
 .reel-card .linkedin-app .li-revfest-poster,.linkedin-app .li-revfest-poster{display:block;width:100%;height:auto;max-width:none;object-fit:contain;background:none;border-radius:0;margin:0}
+
+/* A connection invitation is discovered through the phone, then opened deliberately. */
+.linkedin-app .li-notification-button{position:relative;appearance:none;-webkit-appearance:none;min-height:44px;margin:0;padding:0;border:0;border-radius:5px;background:none;color:inherit;font:inherit;cursor:pointer}
+.linkedin-app .li-notification-badge{position:absolute;top:-5px;left:calc(50% + 3px);display:grid;place-items:center;width:20px;height:20px;border:2px solid #fff;border-radius:50%;background:#cc1016;color:#fff;font:600 11px/1 -apple-system,BlinkMacSystemFont,Arial,sans-serif;animation:li-notification-arrive .28s ease-out both;pointer-events:none}
+.linkedin-app .li-notification-badge[hidden],.linkedin-app .li-notification-dialog[hidden]{display:none}
+.linkedin-app .li-notification-dialog{position:absolute;left:12px;right:12px;bottom:96px;z-index:50;padding:22px 20px 20px;border:1px solid #e1e7ec;border-radius:20px;background:#fffffff5;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 14px 44px #162b4033;animation:li-notification-open .2s ease-out both;pointer-events:auto}
+.linkedin-app .li-notification-avatar{display:block;width:54px;height:54px;border-radius:50%;background:#d3c7b7 url('assets/andrew-profile-photo.jpeg') 52% 18%/175% auto no-repeat}
+.linkedin-app .li-notification-dialog h2{margin:14px 0 6px;color:#191919;font:600 21px/1.2 -apple-system,BlinkMacSystemFont,Arial,sans-serif;letter-spacing:-.45px}
+.linkedin-app .li-notification-dialog p{margin:0 0 18px;color:#62676b;font:400 14px/1.5 -apple-system,BlinkMacSystemFont,Arial,sans-serif;letter-spacing:0}
+.linkedin-app .li-notification-close{position:absolute;right:8px;top:8px;display:grid;place-items:center;width:44px;height:44px;margin:0;padding:11px;border:0;border-radius:50%;background:none;color:#62676b;cursor:pointer}
+.linkedin-app .li-notification-close svg{width:22px;height:22px}
+.linkedin-app .li-notification-connect{display:flex;align-items:center;justify-content:center;gap:10px;min-height:44px;padding:10px 12px;border-radius:999px;background:#0a66c2;color:#fff;font:600 15px/1.4 -apple-system,BlinkMacSystemFont,Arial,sans-serif;letter-spacing:0;text-decoration:none}
+.linkedin-app .li-notification-connect:hover{background:#004182}
+.linkedin-app .li-notification-button:focus-visible,.linkedin-app .li-notification-close:focus-visible,.linkedin-app .li-notification-connect:focus-visible{outline:2px solid #0a66c2;outline-offset:3px}
+.linkedin-app.is-linkedin-prompt-open .phone-thumb-spotlight{opacity:0!important}
+.linkedin-app.is-interacting.has-thumb-pointer.is-linkedin-prompt-open,.linkedin-app.is-interacting.has-thumb-pointer.is-linkedin-prompt-open *{cursor:auto!important}
+.linkedin-app.is-linkedin-prompt-open .li-notification-button,.linkedin-app.is-linkedin-prompt-open .li-notification-close,.linkedin-app.is-linkedin-prompt-open .li-notification-connect{cursor:pointer!important}
+@keyframes li-notification-arrive{from{opacity:0;transform:scale(.65)}to{opacity:1;transform:scale(1)}}
+@keyframes li-notification-open{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.linkedin-app .li-notification-badge,.linkedin-app .li-notification-dialog{animation:none}}
