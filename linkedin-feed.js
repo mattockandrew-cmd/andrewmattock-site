@@ -49,6 +49,7 @@
     const taskButton = app.querySelector('.onboarding-task-button');
     const isClone = inCard?.dataset.clone === 'true';
     let manual = false, pointerInside = false, keyboardFocus = false;
+    let touchResumeTimer = null, touchSession = false, touchActive = false;
     let feedTimeline = [], mailTimeline = [], sequenceTimes = {};
     // Three copies let the reader cross either seam without reaching an edge.
     const loopTrack = document.createElement('div');
@@ -131,6 +132,7 @@
       inboxViewport.scrollTop = inboxY;
       updateControls(view);
       document.dispatchEvent(new Event('portfolio:phoneinteraction'));
+      resumeAfterTouch();
     }
     // Invert the shared ease so autoplay resumes at the reader's scroll position.
     function timeAtPosition(points, position, minimum = 0) {
@@ -142,8 +144,17 @@
       const easedTime = 3*.22*(1-t)*(1-t)*t+3*.36*(1-t)*t*t+t*t*t;
       return Math.max(minimum, segment.start.time+(segment.end.time-segment.start.time)*easedTime);
     }
+    function resumeAfterTouch() {
+      clearTimeout(touchResumeTimer);
+      if (!manual || !touchSession || touchActive || motion.matches) return;
+      touchResumeTimer = setTimeout(() => {
+        if (manual && !touchActive && !keyboardFocus) exitManual();
+      }, 5000);
+    }
     function exitManual() {
       if (!manual || phoneDrag) return;
+      clearTimeout(touchResumeTimer);
+      touchSession = touchActive = false;
       app.classList.remove('has-thumb-pointer');
       const view = app.dataset.phoneView;
       const stage = emailStages.get(selectedEmailId) || emailStages.get('apollo');
@@ -183,6 +194,7 @@
       app.classList.add('has-thumb-pointer');
     }
     function startPhoneDrag(event) {
+      if (event.pointerType === 'touch') { touchSession = touchActive = true; clearTimeout(touchResumeTimer); }
       suppressDragClick = false;
       keyboardFocus = false;
       enterManual();
@@ -221,6 +233,7 @@
       if (event.pointerType === 'touch' || event.type === 'pointercancel') app.classList.remove('has-thumb-pointer');
       if (event.type === 'pointercancel') suppressDragClick = false;
       if (!pointerInside && event.pointerType !== 'touch') exitManual();
+      if (event.pointerType === 'touch') { touchActive = false; resumeAfterTouch(); }
     }
     hardware.addEventListener('pointerenter', event => {
       if (event.pointerType !== 'touch') { enterManual(); placeThumb(event); }
@@ -253,11 +266,21 @@
         if (!pointerInside) exitManual();
       }
     });
+    interactionRoot.addEventListener('pointerdown', event => {
+      if (event.pointerType === 'touch') { touchSession = touchActive = true; clearTimeout(touchResumeTimer); }
+    }, {passive:true});
+    ['pointerup','pointercancel'].forEach(type => interactionRoot.addEventListener(type, event => {
+      if (event.pointerType === 'touch') { touchActive = false; resumeAfterTouch(); }
+    }, {passive:true}));
     document.addEventListener('pointerdown', event => {
       if (manual && !interactionRoot.contains(event.target)) exitManual();
     });
     controls.forEach(button => {
-      button.addEventListener('pointerdown', event => { keyboardFocus = false; event.stopPropagation(); });
+      button.addEventListener('pointerdown', event => {
+        keyboardFocus = false;
+        if (event.pointerType === 'touch') { touchSession = touchActive = true; clearTimeout(touchResumeTimer); }
+        event.stopPropagation();
+      });
       button.addEventListener('click', () => enterManual(button.dataset.phoneView === 'email' ? 'inbox' : 'feed'));
     });
     emailRows.forEach(row => row.addEventListener('click', () => {
@@ -268,6 +291,7 @@
     }));
     backButton.addEventListener('click', () => enterManual('inbox'));
     [{region:viewport,view:'feed'},{region:mailViewport,view:'email'},{region:inboxViewport,view:'inbox'}].forEach(({region,view}) => {
+      region.addEventListener('scroll', resumeAfterTouch, {passive:true});
       region.addEventListener('wheel', event => {
         if (event.ctrlKey || event.metaKey) return;
         enterManual(view);
@@ -298,26 +322,23 @@
       if (inCard) {
         const r = inCard.getBoundingClientRect();
         const v = window.innerWidth <= 760 ? {left:0,top:0,right:window.innerWidth,bottom:window.innerHeight} : inCard.closest('.reel-window').getBoundingClientRect();
-        return r.right < v.left || r.left > v.right || r.bottom < v.top || r.top > v.bottom;
+        return r.right <= r.left || r.bottom <= r.top || r.right <= v.left || r.left >= v.right || r.bottom <= v.top || r.top >= v.bottom;
       }
       return false;
     }
     function sync() {
       if (!animations.length) return;
+      if (manual && touchSession && !motion.matches && shouldPause()) exitManual();
       if (manual) { animations.forEach(animation => animation.pause()); return; }
       const paused = shouldPause();
-      const current = motion.matches ? 0 : animations[0].currentTime;
-      const now = document.timeline?.currentTime;
+      const current = motion.matches ? 0 : Number(animations[0].currentTime || 0);
       const seconds = Number(current) % Number(animations[0].effect.getTiming().duration) / 1000;
       const stage = [...emailStages.values()].find(stage => seconds >= stage.inboxAt && seconds <= stage.closeAt + .3);
       if (stage) selectedEmailId = stage.id;
       animations.forEach(animation => {
-        animation.currentTime = current;
+        if (animation.currentTime == null || Math.abs(Number(animation.currentTime)-current) > 16) animation.currentTime = current;
         if (paused) animation.pause();
-        else {
-          animation.play();
-          if (now != null) animation.startTime = now - Number(current);
-        }
+        else if (animation.playState !== 'running') animation.play();
       });
     }
     function layout() {
@@ -452,12 +473,14 @@
     }
     new ResizeObserver(scheduleLayout).observe(screen);
     app.querySelectorAll('img').forEach(image => image.addEventListener('load', scheduleLayout, {once: true}));
+    if (inCard && 'IntersectionObserver' in window) new IntersectionObserver(sync, {threshold:0}).observe(inCard);
     controllers.push({sync, layout});
     scheduleLayout();
   });
   function syncAll() { controllers.forEach(controller => controller.sync()); }
   document.addEventListener('portfolio:motionchange', syncAll);
   document.addEventListener('visibilitychange', syncAll);
+  document.addEventListener('scroll', syncAll, {passive:true});
   motion.addEventListener('change', syncAll);
   const root = document.querySelector('.showreel');
   if (root) new MutationObserver(syncAll).observe(root, {attributes: true, attributeFilter: ['class'], subtree: true});

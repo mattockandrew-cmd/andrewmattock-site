@@ -26,5 +26,12 @@
 /* Reserve caption space without stretching the phone hardware. */
 .reel-card.campaign .campaign-phone{left:50%;top:10px;width:calc((100% - 76px) * 2 / 3);height:calc(100% - 76px);transform:translateX(-50%) rotate(-1deg)}
 @media(max-width:760px){
- .reel-card.web-experiences .web-macbook{top:calc(50% - 10px)}
+ .reel-card.web-experiences .web-macbook{top:calc(50% - 10px);transform:translate(-50%,-50%)}
 }
+
+/* When autoplay is blocked, the native player remains usable inside its frame. */
+.reel-card.autodesk .tv-display video[controls]{pointer-events:auto}
+.reel-card.film .projection-plane iframe.mobile-player{pointer-events:auto}
+.reel-card .card-caption.autodesk-work-link{pointer-events:auto;cursor:pointer}
+.reel-card .card-caption.autodesk-work-link:hover{background:#1d1a17ad}
+.reel-card .card-caption.autodesk-work-link:focus-visible{outline:2px solid #fff;outline-offset:3px}

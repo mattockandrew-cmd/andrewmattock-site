@@ -108,6 +108,30 @@
     videoCard?.querySelector('iframe')?.remove();
     videoCard = null;
   }
+  function playCommercial(card) {
+    if (!card || reduced.matches || menu.open || dialog.open || document.hidden || !visible) return;
+    const r = card.getBoundingClientRect(), view = sceneViewport();
+    if (r.right <= view.left || r.left >= view.right || r.bottom <= view.top || r.top >= view.bottom) return;
+    const video = card.querySelector('video');
+    if (video.dataset.playPending === 'true') return;
+    if (!video.getAttribute('src')) video.src = 'assets/autodesk-excerpt.mp4';
+    video.muted = true;
+    video.playsInline = true;
+    video.dataset.playPending = 'true';
+    video.play().then(() => {
+      delete video.dataset.playPending;
+      delete video.dataset.autoplayBlocked;
+      video.controls = false;
+    }).catch(error => {
+      delete video.dataset.playPending;
+      // Leaving view can cancel a pending play; this is not an autoplay denial.
+      if (error.name === 'AbortError' || commercialCard !== card) return;
+      const bounds = card.getBoundingClientRect(), viewport = sceneViewport();
+      if (document.hidden || menu.open || dialog.open || bounds.right <= viewport.left || bounds.left >= viewport.right || bounds.bottom <= viewport.top || bounds.top >= viewport.bottom) return;
+      video.dataset.autoplayBlocked = 'true';
+      video.controls = true;
+    });
+  }
   function updateCommercial() {
     const stopped = reduced.matches || menu.open || dialog.open || document.hidden || !visible;
     hero.classList.toggle('media-paused', stopped);
@@ -117,14 +141,14 @@
       const s = sceneViewport();
       return r.right > s.left && r.left < s.right && r.bottom > s.top && r.top < s.bottom;
     });
-    if (target === commercialCard) return;
+    if (target === commercialCard) {
+      const video = target?.querySelector('video');
+      if (video?.paused && video.dataset.autoplayBlocked !== 'true') playCommercial(target);
+      return;
+    }
     commercialCard?.querySelector('video')?.pause();
     commercialCard = target;
-    if (target) {
-      const video = target.querySelector('video');
-      if (!video.getAttribute('src')) video.src = 'assets/autodesk-excerpt.mp4';
-      video.play().catch(() => {});
-    }
+    if (target) playCommercial(target);
   }
   function updateVideo() {
     updateCommercial();
@@ -142,10 +166,12 @@
     if (!film) return;
     const video = document.createElement('iframe');
     video.title = 'Design Disruptors trailer playing on the theater screen, muted';
-    video.tabIndex = -1;
-    video.setAttribute('aria-hidden', 'true');
-    video.allow = 'autoplay';
-    video.src = 'https://player.vimeo.com/video/140875675?background=1&autoplay=1&loop=1&muted=1&dnt=1';
+    video.tabIndex = phone.matches ? 0 : -1;
+    if (!phone.matches) video.setAttribute('aria-hidden', 'true');
+    if (phone.matches) video.className = 'mobile-player';
+    video.allow = 'autoplay; fullscreen; picture-in-picture';
+    video.allowFullscreen = true;
+    video.src = `https://player.vimeo.com/video/140875675?background=${phone.matches ? 0 : 1}&autoplay=1&loop=1&muted=1&playsinline=1&autopause=0&controls=${phone.matches ? 1 : 0}&dnt=1`;
     video.addEventListener('load', () => video.classList.add('is-ready'));
     (film.querySelector('.preview-window') || film.querySelector('.reel-image')).prepend(video);
     videoCard = film;
@@ -269,7 +295,13 @@
   const resizeObserver = new ResizeObserver(() => measure(false));
   resizeObserver.observe(scene);
   reduced.addEventListener('change', () => { measure(true); updateVideo(); });
-  phone.addEventListener('change', () => { measure(true); updateVideo(); });
+  phone.addEventListener('change', () => { measure(true); clearBackgroundVideo(); updateVideo(); });
+  // Each media card responds immediately when document scrolling reveals it.
+  if ('IntersectionObserver' in window) {
+    const mediaObserver = new IntersectionObserver(updateVideo, {threshold:0});
+    cards.filter(card => card.matches('.film, .autodesk')).forEach(card => mediaObserver.observe(card));
+  }
+  hero.addEventListener('pointerup', () => playCommercial(commercialCard), {passive:true});
   document.addEventListener('visibilitychange', updateVideo);
   requestAnimationFrame(() => { measure(true); requestAnimationFrame(tick); });
 })();

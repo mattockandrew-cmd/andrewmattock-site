@@ -12,16 +12,16 @@
     function shouldPause() {
       if (motion.matches || document.hidden || browser.closest('.media-paused')) return true;
       const r = card.getBoundingClientRect(), v = window.innerWidth <= 760 ? {left:0,top:0,right:window.innerWidth,bottom:window.innerHeight} : gallery.getBoundingClientRect();
-      return r.right < v.left || r.left > v.right || r.bottom < v.top || r.top > v.bottom;
+      return r.right <= r.left || r.bottom <= r.top || r.right <= v.left || r.left >= v.right || r.bottom <= v.top || r.top >= v.bottom;
     }
     function sync() {
       if (!animations.length) return;
       const current = motion.matches ? selectedTime : Number(animations[0].currentTime || 0);
-      const paused = shouldPause(), now = document.timeline?.currentTime;
+      const paused = shouldPause();
       animations.forEach(animation => {
-        animation.currentTime = current;
+        if (animation.currentTime == null || Math.abs(Number(animation.currentTime)-current) > 16) animation.currentTime = current;
         if (paused) animation.pause();
-        else { animation.play(); if (now != null) animation.startTime = now-current; }
+        else if (animation.playState !== 'running') animation.play();
       });
       const phase = current % duration >= 15400 && current % duration < 42500 ? 'seo' : 'demo';
       controls.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.webFlow === phase)));
@@ -103,10 +103,12 @@
     });
     new ResizeObserver(scheduleLayout).observe(display);
     browser.querySelectorAll('img').forEach(img=>img.addEventListener('load',scheduleLayout,{once:true}));
+    if ('IntersectionObserver' in window) new IntersectionObserver(sync, {threshold:0}).observe(card);
     controllers.push({sync});scheduleLayout();
   });
   function syncAll(){controllers.forEach(controller=>controller.sync());}
   document.addEventListener('portfolio:motionchange',syncAll);
   document.addEventListener('visibilitychange',syncAll);
+  document.addEventListener('scroll',syncAll,{passive:true});
   motion.addEventListener('change',syncAll);
 })();
