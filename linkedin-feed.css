@@ -1,0 +1,105 @@
+/* The app is drawn at a native iPhone width, then scaled into the hardware. */
+.linkedin-app{position:absolute;left:0;top:0;width:390px;height:var(--li-height,844px);transform:scale(var(--li-scale,.4));transform-origin:0 0;background:#fff;color:#191919;font:400 14px/1.4 -apple-system,BlinkMacSystemFont,Arial,sans-serif;text-align:left;-webkit-font-smoothing:antialiased}
+.linkedin-app *{box-sizing:border-box}.linkedin-app .li-icon{display:block;flex:0 0 auto;width:24px;height:24px;fill:currentColor;color:inherit;overflow:visible}
+.li-status{height:54px;display:flex;justify-content:space-between;align-items:flex-start;padding:15px 28px 0;font-size:15px;line-height:20px;font-weight:600;background:#fff}.li-status>span:last-child{display:flex;gap:5px;align-items:center;padding-top:3px}.li-status .li-icon-signal{width:17px;height:13px}.li-status .li-icon-wifi{width:16px;height:14px}.li-status .li-icon-battery{width:25px;height:14px}
+.li-topbar{height:48px;padding:7px 12px;display:flex;gap:12px;align-items:center;border-bottom:1px solid #e4e4e4;background:#fff}.li-member-avatar{display:block;width:32px;height:32px;border-radius:50%;background:#d3c7b7 url('assets/andrew-profile-photo.jpeg') 52% 18%/175% auto no-repeat;flex:0 0 auto}.li-search{height:32px;flex:1;border-radius:4px;background:#edf3f7;display:flex;gap:8px;align-items:center;padding:0 10px;color:#5e686b;font-size:14px}.li-search .li-icon{width:18px;height:18px}.li-message{color:#676b6d}.li-message .li-icon{width:25px;height:25px}
+.li-feed-viewport{position:absolute;inset:102px 0 83px;overflow:hidden;background:#f3f2ef}.linkedin-feed-track{display:flex;flex-direction:column;gap:8px;will-change:transform}.li-post{display:block;margin:0;flex:0 0 auto;background:#fff;overflow:hidden}.li-post-header{display:flex;gap:8px;align-items:flex-start;padding:12px 12px 8px;min-height:62px}.li-post-header .li-member-avatar{width:42px;height:42px}.li-company-avatar{display:grid;place-items:center;width:42px;height:42px;background:#fff1da;flex:0 0 auto}.linkedin-app .li-company-avatar img{width:32px;height:32px;display:block;object-fit:contain;background:none;border:0;border-radius:0}.li-author{min-width:0;flex:1}.li-author strong{display:block;font-size:14px;line-height:18px;font-weight:600;white-space:nowrap}.li-author>span{display:block;color:#666;font-size:11px;line-height:16px}.li-author .li-connection{color:#666;font-weight:400;font-size:13px}.li-author .li-post-time{display:flex;align-items:center;gap:4px}.li-post-time .li-icon{width:11px;height:11px}.li-more{color:#666;padding:1px 0 0;margin-left:auto}.li-more .li-icon{width:21px;height:21px}.li-post-copy{padding:0 12px 12px;font-size:14px;line-height:20px;margin:0;letter-spacing:0}.li-blue{color:#0a66c2;font-weight:600}
+.reel-card .linkedin-app .li-creative,.linkedin-app .li-creative{display:block;width:100%;height:auto;object-fit:contain;object-position:center;background:none;border-radius:0;margin:0;max-width:none}
+.li-ad-cta{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:12px;background:#edf3f8;min-height:58px}.li-ad-cta strong{font-size:12px;line-height:16px;font-weight:600;flex:1}.li-ad-cta>span{border:1px solid #0a66c2;color:#0a66c2;border-radius:22px;padding:7px 13px;font-size:13px;font-weight:600;white-space:nowrap;flex-shrink:0}
+.li-actions{display:flex;justify-content:space-around;align-items:center;height:52px;border-top:1px solid #e5e5e5;color:#676b6d;background:#fff;padding:4px 5px}.li-actions>span{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:58px}.li-actions .li-icon{width:21px;height:21px}.li-actions small{font-size:11px;line-height:13px;font-weight:500;letter-spacing:0}
+.reel-card .linkedin-app .li-organic-photo,.linkedin-app .li-organic-photo{display:block;width:100%;height:300px;object-fit:cover;object-position:center 45%;margin:0;border-radius:0;background:#e6e4df;max-width:none}
+.li-navigation{position:absolute;bottom:22px;left:0;right:0;height:60px;display:flex;justify-content:space-around;align-items:flex-start;border-top:1px solid #ddd;background:#fff;padding-top:8px;color:#676b6d}.li-tab{width:20%;display:flex;flex-direction:column;align-items:center;gap:4px;white-space:nowrap}.li-tab .li-icon{width:24px;height:24px}.li-tab small{font-size:10.5px;line-height:13px;font-weight:400}.li-tab.is-selected{color:#161616}.li-home-indicator{position:absolute;bottom:7px;left:50%;width:134px;height:5px;transform:translateX(-50%);border-radius:4px;background:#111}
+@media(prefers-reduced-motion:reduce){.linkedin-feed-track{will-change:auto}}
+/* The phone moves between two illustrative apps; the email itself is Andrew's supplied artwork. */
+.linkedin-app{overflow:hidden;isolation:isolate}.li-status{position:relative;z-index:20}.li-home-indicator{z-index:30;pointer-events:none}.li-content{position:absolute;inset:54px 0 0;background:#fff;transform-origin:center 30%;overflow:hidden}.li-content .li-feed-viewport{top:48px}
+.phone-app-switcher{position:absolute;inset:0;z-index:1;opacity:0;background:radial-gradient(ellipse at 75% 15%,#80959d 0,transparent 65%),linear-gradient(140deg,#43555c,#253945 60%,#6b8177);pointer-events:none}.switcher-label{position:absolute;top:84px;left:145px;display:flex;align-items:center;gap:8px;color:#fff;font-weight:600;font-size:15px}.linkedin-app .switcher-label img{width:28px;height:28px;border-radius:7px;object-fit:contain}.switcher-linkedin-label{position:absolute;top:84px;left:-36px;color:#fff;font-size:15px;font-weight:600;display:flex;align-items:center;gap:7px}.switcher-linkedin-label b{background:#0a66c2;border-radius:5px;font-size:21px;width:28px;height:28px;text-align:center}
+.gmail-app{position:absolute;inset:54px 0 0;z-index:10;opacity:0;pointer-events:none;background:#f8f9ff;color:#202124;font:400 14px/1.4 -apple-system,BlinkMacSystemFont,Arial,sans-serif}.gmail-app .gmail-icon{display:block;width:23px;height:23px;flex:0 0 auto}.gmail-inbox,.gmail-message{position:absolute;inset:0;background:#f8f9ff}.gmail-message{opacity:0;z-index:2}.gmail-topbar{display:flex;gap:12px;align-items:center;padding:8px 14px}.gmail-search{height:48px;flex:1;border-radius:28px;background:#eaf0fd;display:flex;align-items:center;gap:15px;padding:0 13px;color:#404654}.gmail-search>span:nth-child(2){flex:1;font-size:16px}.gmail-avatar{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#507359;color:#fff;font-weight:500}.gmail-icon-spark{color:#5468d9}.gmail-inbox-content{padding:20px 16px}.gmail-inbox-label{color:#606572;font-size:13px}.gmail-email-row{position:relative;display:flex;align-items:flex-start;gap:12px;margin-top:21px}.gmail-sender-avatar{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#ffe7c2;flex:0 0 auto}.linkedin-app .gmail-sender-avatar img{display:block;width:25px;height:25px;object-fit:contain;border-radius:0}.gmail-email-row>div{flex:1;min-width:0}.gmail-row-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:2px}.gmail-row-heading>strong{font-size:16px;font-weight:600}.gmail-row-heading>span{font-size:11px;font-weight:600}.gmail-email-row>div>strong{font-size:14px;font-weight:600}.gmail-email-row p{margin:2px 0 0;font-size:13px;color:#5f6368}.gmail-email-row>.gmail-icon{position:absolute;right:0;bottom:0;width:20px;height:20px;color:#616773}.gmail-tap{position:absolute;left:185px;top:28px;width:44px;height:44px;border-radius:50%;border:2px solid #b6c8ee;background:#c9d8f12b;opacity:0}
+.gmail-compose{position:absolute;right:18px;bottom:105px;display:flex;align-items:center;gap:14px;border-radius:18px;padding:17px 20px;background:#d4e3fe;box-shadow:0 4px 12px #20212420;font-size:15px;font-weight:500}.gmail-navigation{position:absolute;bottom:22px;left:0;right:0;height:72px;background:#edf2fc;display:flex;justify-content:space-around;padding-top:11px}.gmail-navigation>span{display:flex;flex-direction:column;align-items:center;gap:3px;width:92px}.gmail-navigation .gmail-icon{width:66px;height:30px;padding:4px 21px;border-radius:22px}.gmail-navigation .is-selected .gmail-icon{background:#c2d6fc}.gmail-navigation small{font-size:11px;font-weight:500;letter-spacing:0}
+.gmail-message-toolbar{height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 17px}.gmail-message-toolbar>div{display:flex;align-items:center;gap:19px}.gmail-message-toolbar .gmail-icon-more{width:18px}.gmail-mail-viewport{position:absolute;inset:50px 0 94px;overflow:hidden}.gmail-mail-content{padding:14px 12px 17px;will-change:transform}.gmail-subject{display:flex;justify-content:space-between;align-items:center;margin:0 4px 23px;font-size:24px;line-height:30px}.gmail-subject .gmail-icon{width:22px;height:22px;color:#5f6368}.gmail-sender{display:flex;gap:11px;align-items:center;margin:0 4px 22px;height:42px}.gmail-sender>div{flex:1}.gmail-sender strong{display:block;font-size:14px;font-weight:600}.gmail-sender strong small{font-size:11px;font-weight:400;color:#5f6368;margin-left:6px}.gmail-sender>div>span{display:block;color:#5f6368;font-size:12px}.gmail-down{margin-left:5px}.gmail-sender>.gmail-icon{width:19px;height:19px;color:#5f6368}.gmail-sender>.gmail-icon-more{width:15px;margin-left:3px}.reel-card .linkedin-app .gmail-email-image,.linkedin-app .gmail-email-image{display:block;width:100%;height:auto;max-width:none;object-fit:contain;object-position:center;margin:0;border-radius:0;background:none}.gmail-reply-actions{display:flex;gap:10px;margin:20px 4px 0}.gmail-reply-actions>span{border:1px solid #a8acb5;border-radius:22px;display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 18px;flex:1;font-size:13px}.gmail-reply-actions .gmail-icon{width:18px;height:18px}
+@media(prefers-reduced-motion:reduce){.gmail-mail-content{will-change:auto}}
+.li-content{z-index:2}.gmail-app{transform-origin:center 30%;overflow:hidden}
+
+/* A live completion state over the supplied email artwork, measured in its own coordinates. */
+.gmail-email-artwork{position:relative;width:100%;--email-scale:.43}
+.onboarding-task-complete{position:absolute;left:20.45%;top:46.4%;width:69.43%;height:4.68%;display:flex;align-items:center;gap:calc(13px * var(--email-scale));padding:0 calc(28px * var(--email-scale)) 0 calc(25px * var(--email-scale));background:#fff;opacity:0;pointer-events:none;color:#c5c8ce;font-family:Arial,sans-serif}
+.onboarding-task-title{position:relative;font-size:calc(22px * var(--email-scale));line-height:1.15;white-space:nowrap}
+.onboarding-task-strike{position:absolute;left:0;right:0;top:53%;height:calc(2px * var(--email-scale));background:#bbc0c8;transform:scaleX(0);transform-origin:left center}
+.onboarding-task-earned{font-size:calc(16px * var(--email-scale));line-height:1.2;margin-left:auto;white-space:nowrap}
+.onboarding-task-check{display:block;width:calc(24px * var(--email-scale));height:calc(24px * var(--email-scale));flex:0 0 auto;color:#31ca86}
+.onboarding-task-check path{stroke-dasharray:1;stroke-dashoffset:1}
+.onboarding-task-icon-fade{position:absolute;left:10%;top:46.4%;width:10.45%;height:4.68%;background:#fff;opacity:0;pointer-events:none}
+.onboarding-task-tap{position:absolute;left:33.5%;top:48.75%;width:40px;height:40px;margin:-20px 0 0 -20px;border:2px solid #aac1e6;border-radius:50%;background:#c9d8f12b;opacity:0;pointer-events:none}
+
+/* Hover or focus takes over the phone; the native scroll containers own input. */
+.linkedin-app.is-interacting .li-feed-viewport,.linkedin-app.is-interacting .gmail-mail-viewport{overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:none;touch-action:pan-y;cursor:auto}
+.linkedin-app.is-interacting .li-feed-viewport::-webkit-scrollbar,.linkedin-app.is-interacting .gmail-mail-viewport::-webkit-scrollbar{display:none}
+.linkedin-app.is-interacting .phone-app-switcher{opacity:0!important;pointer-events:none}
+.linkedin-app.is-interacting[data-phone-view="feed"] .li-content{opacity:1!important;transform:none!important;border-radius:0!important}
+.linkedin-app.is-interacting[data-phone-view="feed"] .gmail-app{opacity:0!important;pointer-events:none}
+.linkedin-app.is-interacting[data-phone-view="feed"] .linkedin-feed-track{transform:none!important;will-change:auto}
+.linkedin-app.is-interacting .li-post[data-repeat="true"]{display:none}
+.linkedin-app.is-interacting[data-phone-view="email"] .li-content{opacity:0!important;pointer-events:none}
+.linkedin-app.is-interacting[data-phone-view="email"] .gmail-app,.linkedin-app.is-interacting[data-phone-view="email"] .gmail-message{opacity:1!important;transform:none!important;border-radius:0!important;pointer-events:auto}
+.linkedin-app.is-interacting[data-phone-view="email"] .gmail-inbox{opacity:0!important;pointer-events:none}
+.linkedin-app.is-interacting[data-phone-view="email"] .gmail-mail-content{transform:none!important;will-change:auto}
+.li-feed-viewport:focus-visible,.gmail-mail-viewport:focus-visible{outline:2px solid #0a66c2;outline-offset:-3px}
+.phone-controls{position:absolute;top:17px;right:13px;z-index:5;display:grid;gap:3px;padding:4px;border:1px solid #ffffff80;border-radius:17px;background:#ffffffb3;backdrop-filter:blur(12px);opacity:0;transition:opacity .2s;pointer-events:none}
+.phone-controls button{border:0;border-radius:13px;background:transparent;color:#4e545c;font:400 10px/1.2 -apple-system,BlinkMacSystemFont,Arial,sans-serif;padding:8px 7px;cursor:pointer;min-width:39px}
+.phone-controls button[aria-pressed="true"]{background:#fff;color:#161616;box-shadow:0 1px 4px #0000000b}
+.campaign:hover .phone-controls,.campaign:focus-within .phone-controls{opacity:1;pointer-events:auto}
+.phone-controls button:focus-visible{outline:2px solid #333;outline-offset:1px}
+.campaign-work-link{pointer-events:auto}
+.onboarding-task-button{display:none;position:absolute;left:20.45%;top:46.4%;width:69.43%;height:4.68%;padding:0;background:transparent;border:0;cursor:pointer}
+.linkedin-app.is-interacting[data-phone-view="email"] .onboarding-task-button{display:block}
+.onboarding-task-button:focus-visible{outline:2px solid #0a66c2;outline-offset:-2px;border-radius:4px}
+.linkedin-app.is-interacting .onboarding-task-tap{opacity:0!important}
+.linkedin-app.is-interacting .gmail-email-artwork[data-task-complete="true"] .onboarding-task-complete{opacity:1!important}
+.linkedin-app.is-interacting .gmail-email-artwork[data-task-complete="true"] .onboarding-task-icon-fade{opacity:.65!important}
+.linkedin-app.is-interacting .gmail-email-artwork[data-task-complete="true"] .onboarding-task-strike{transform:scaleX(1)!important}
+.linkedin-app.is-interacting .gmail-email-artwork[data-task-complete="true"] .onboarding-task-check path{stroke-dashoffset:0!important}
+.linkedin-app.is-interacting .gmail-email-artwork[data-task-complete="false"] .onboarding-task-complete,.linkedin-app.is-interacting .gmail-email-artwork[data-task-complete="false"] .onboarding-task-icon-fade{opacity:0!important}
+@media(hover:none){.phone-controls{opacity:1;pointer-events:auto}}
+@media(prefers-reduced-motion:reduce){.phone-controls{transition:none}}
+
+.reel-card.campaign{cursor:default}.campaign-work-link{cursor:pointer}.phone.is-phone-interacting{animation-play-state:paused!important}
+
+/* A soft contact spotlight follows the pointer; dragging moves the content like a thumb. */
+.phone-thumb-spotlight{position:absolute;left:50%;top:50%;z-index:60;width:var(--thumb-size,90px);height:var(--thumb-size,90px);border:var(--thumb-line,2px) solid #ffffffb3;border-radius:50%;background:radial-gradient(circle at 45% 40%,#ffffff5e 0%,#ffffff26 42%,#b9cfeb12 72%);box-shadow:0 0 28px 9px #ffffff24,inset 0 0 12px #ffffff33,0 3px 12px #14263b1c;opacity:0;transform:translate(-50%,-50%) scale(1);pointer-events:none;transition:opacity .16s,transform .16s;will-change:left,top}
+.linkedin-app.is-interacting.has-thumb-pointer .phone-thumb-spotlight{opacity:1}
+.linkedin-app.is-phone-pressed .phone-thumb-spotlight{transform:translate(-50%,-50%) scale(.84);background:radial-gradient(circle at 45% 40%,#ffffff8c,#ffffff38 50%,#b9cfeb20);box-shadow:0 0 20px 6px #ffffff33,inset 0 0 15px #fff6}
+.linkedin-app.is-interacting.has-thumb-pointer,.linkedin-app.is-interacting.has-thumb-pointer *{cursor:none!important}
+.linkedin-app.is-interacting.has-thumb-pointer{user-select:none;-webkit-user-select:none}
+.linkedin-app.is-phone-dragging .li-feed-viewport,.linkedin-app.is-phone-dragging .gmail-mail-viewport{scroll-behavior:auto}
+@media(prefers-reduced-motion:reduce){.phone-thumb-spotlight{transition:none}}
+
+/* The manual feed has matching copies on either side of its visible cycle. */
+.li-manual-feed-track{display:none}
+.linkedin-app.is-interacting[data-phone-view="feed"] .linkedin-feed-track{display:none!important}
+.linkedin-app.is-interacting[data-phone-view="feed"] .li-manual-feed-track{display:flex;flex-direction:column;gap:0}
+.li-feed-cycle{display:flex;flex-direction:column;gap:8px;padding-bottom:8px;flex:0 0 auto}
+.linkedin-app.is-interacting .li-feed-viewport{overflow-anchor:none}
+/* Original campaign emails live in a browsable Gmail inbox. */
+.gmail-inbox-content{position:absolute;inset:64px 0 94px;overflow:hidden;padding:20px 16px;scrollbar-width:none;overscroll-behavior:contain;overflow-anchor:none}
+.gmail-email-list{position:relative;display:flex;flex-direction:column;gap:21px;margin-top:21px;will-change:transform}
+.gmail-email-row{margin-top:0;padding:0;border:0;background:none;width:100%;font:inherit;line-height:1.4;text-align:left;color:inherit;cursor:pointer;flex:0 0 auto;min-height:76px}
+.gmail-row-main{display:block;flex:1;min-width:0}.gmail-row-heading{display:flex}.gmail-row-subject{display:block;font-size:14px;line-height:20px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:5px}.gmail-row-preview{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:13px;line-height:18px;color:#5f6368;padding-right:24px}
+.gmail-invision-avatar{background:#ea4475;color:#fff;font-size:19px;font-weight:500}.gmail-email-row[data-email-id=designbetter] .gmail-invision-avatar,.gmail-email-row[data-email-id=skate] .gmail-invision-avatar{background:#244fe6}
+.gmail-back-button{display:grid;place-items:center;border:0;padding:0;background:none;color:inherit;width:28px;height:36px;cursor:pointer}
+.gmail-campaign-tap{position:absolute;left:185px;top:28px;width:44px;height:44px;border-radius:50%;border:2px solid #b6c8ee;background:#c9d8f12b;opacity:0;pointer-events:none}
+.gmail-campaign-mail{position:absolute;left:0;top:0;width:100%;opacity:0;background:#f8f9ff}
+.reel-card .linkedin-app .gmail-campaign-email-image,.linkedin-app .gmail-campaign-email-image{display:block;width:100%;height:auto;max-width:none;object-fit:contain;object-position:top;border-radius:0;background:none;margin:0}
+.gmail-subject>span{min-width:0;flex:1}.gmail-subject>.gmail-icon{flex:0 0 auto;align-self:flex-start;margin:4px 0 0 12px}
+.linkedin-app.is-interacting[data-phone-view=inbox] .li-content{opacity:0!important;pointer-events:none}
+.linkedin-app.is-interacting[data-phone-view=inbox] .gmail-app,.linkedin-app.is-interacting[data-phone-view=inbox] .gmail-inbox{opacity:1!important;transform:none!important;border-radius:0!important;pointer-events:auto}
+.linkedin-app.is-interacting[data-phone-view=inbox] .gmail-message{opacity:0!important;pointer-events:none}
+.linkedin-app.is-interacting[data-phone-view=inbox] .gmail-inbox-content{overflow-y:auto;touch-action:pan-y}
+.linkedin-app.is-interacting[data-phone-view=inbox] .gmail-email-list{transform:none!important;will-change:auto}
+.linkedin-app.is-interacting .gmail-mail-content{display:none!important}
+.linkedin-app.is-interacting .gmail-mail-content.is-selected-email{display:block!important;position:relative;left:auto;top:auto;opacity:1!important;transform:none!important}
+.linkedin-app.is-interacting .gmail-campaign-tap,.linkedin-app.is-interacting .gmail-tap{opacity:0!important}
+.linkedin-app.is-measuring-emails .gmail-mail-content{display:block!important;position:absolute!important;left:0!important;top:0!important;width:100%;opacity:0!important}
+.gmail-inbox-content::-webkit-scrollbar{display:none}.gmail-email-row:focus-visible,.gmail-back-button:focus-visible{outline:2px solid #0a66c2;outline-offset:3px;border-radius:6px}
+
+.gmail-inbox-label{display:block;position:relative;z-index:2;background:#f8f9ff;padding-bottom:8px}
+.linkedin-app.is-interacting.is-measuring-emails .gmail-mail-content{display:block!important;position:absolute!important;left:0!important;top:0!important;opacity:0!important}
+.reel-card .linkedin-app .li-revfest-poster,.linkedin-app .li-revfest-poster{display:block;width:100%;height:auto;max-width:none;object-fit:contain;background:none;border-radius:0;margin:0}

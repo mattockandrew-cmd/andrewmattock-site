@@ -1,0 +1,68 @@
+/* Presentation canvases: one large artifact per card, with quiet hover captions. */
+.reel-card.film{width:604px;height:400px;--rim-rgb:222 173 223;--rim-k:.46}
+.reel-card.campaign{width:400px;height:400px;--rim-rgb:255 255 255;--rim-k:.8}
+.reel-card.photography{width:352px;height:440px;--rim-rgb:255 255 246;--rim-k:.7}
+.reel-card.figma{width:400px;height:440px;--rim-rgb:255 245 220;--rim-k:.7}
+.reel-card.autodesk{width:604px;height:400px;--rim-rgb:184 222 222;--rim-k:.5}
+.card-composition{position:relative;width:100%;height:100%;isolation:isolate;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif}
+.case-header,.case-footer,.film-name{display:none}
+.case-body{position:absolute;inset:0}
+.project-caption{position:absolute;bottom:16px;left:18px;max-width:calc(100% - 36px);z-index:4;padding:8px 11px;border-radius:20px;color:#fff;background:#15151575;backdrop-filter:blur(16px);font:400 10px/1.2 -apple-system,BlinkMacSystemFont,Arial,sans-serif;opacity:0;transform:translateY(4px);transition:opacity .25s,transform .25s;pointer-events:none}
+.reel-card:hover .project-caption,.reel-card:focus-visible .project-caption{opacity:1;transform:none}
+.card-play{position:absolute;bottom:18px;left:18px;z-index:4;color:#fff9;pointer-events:none;filter:drop-shadow(0 1px 3px #0006)}
+.film .project-caption,.autodesk .project-caption{left:45px;max-width:calc(100% - 64px)}
+
+/* A real hardware cutout floats above a soft lavender/cyan/lemon mesh. */
+.case-campaign{background:radial-gradient(ellipse at 100% 100%,#f8ff57 0%,transparent 58%),radial-gradient(ellipse at 0% 0%,#cbb8fa 0%,transparent 67%),radial-gradient(ellipse at 0% 100%,#98e3df 0%,transparent 66%),linear-gradient(135deg,#c4c8f1,#a5e0e2 60%,#e5efba)}
+.campaign-phone{position:absolute;left:18%;top:2%;width:64%;height:96%;padding:0;transform:rotate(-1deg);filter:drop-shadow(7px 12px 9px #44545642)}
+.campaign-screen{position:absolute;left:19.3%;top:3.1%;width:61.4%;height:93.6%;border-radius:24px;overflow:hidden;background:#fff;color:#242424;font-family:Arial,sans-serif}
+.reel-card .campaign-device-frame{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:fill;background:none;pointer-events:none;z-index:2}
+.campaign-phone-top{height:26px;display:flex;justify-content:space-between;padding:10px 14px 0;font-size:6px;font-weight:600}.campaign-island{display:none}
+.campaign-social-header{display:flex;gap:5px;align-items:center;height:28px;padding:4px 7px;border-bottom:1px solid #ededed}.campaign-social-header b{font:bold 13px/15px Arial;background:#0a66c2;color:#fff;border-radius:1px;padding:0 2px}.campaign-social-header>span:nth-child(2){flex:1;background:#edf3f7;padding:4px 6px;font-size:6px;color:#70767b}.campaign-social-header>span:last-child{font-size:14px;color:#61666a}
+.campaign-feed-window{height:calc(100% - 81px);overflow:hidden;background:#eee}.campaign-feed-track{display:flex;flex-direction:column;gap:6px;animation:original-ad-feed 14s cubic-bezier(.22,1,.36,1) infinite}.campaign-original-post{flex:0 0 auto;background:#fff}
+.reel-card .campaign-original-post img{display:block;width:100%;height:auto;object-fit:contain;border-radius:0;background:#fff}
+.campaign-phone-bottom{position:absolute;inset:auto 0 0;display:flex;justify-content:space-around;padding:5px 10px 12px;border-top:1px solid #ededed;background:#fff;font-size:11px;color:#73767a}.campaign-phone-bottom:after{position:absolute;content:'';bottom:5px;left:50%;width:50px;height:2px;transform:translateX(-50%);border-radius:2px;background:#151515}
+@keyframes original-ad-feed{
+ 0%,12%{transform:translateY(0)}
+ 23%{transform:translateY(calc(-1 * var(--feed-end-0,130px)))}
+ 34%,46%{transform:translateY(calc(-1 * var(--feed-start-1,380px)))}
+ 56%{transform:translateY(calc(-1 * var(--feed-end-1,510px)))}
+ 67%,79%{transform:translateY(calc(-1 * var(--feed-start-2,760px)))}
+ 89%{transform:translateY(calc(-1 * var(--feed-end-2,890px)))}
+ 100%{transform:translateY(calc(-1 * var(--feed-loop,1140px)))}
+}
+.media-paused .campaign-feed-track{animation-play-state:paused}
+
+/* A photographic print, with a restrained paper mat and ambient shadow. */
+.case-photography{background:radial-gradient(ellipse at 80% 0%,#e8e5df,transparent 70%),linear-gradient(135deg,#d0d6d3,#edf0e8)}
+.photograph-window{position:absolute;inset:24px 24px 30px;padding:7px 7px 16px;background:#f9f8f3;transform:rotate(1.3deg);box-shadow:5px 15px 28px -8px #202b2a4d,0 0 0 1px #fff7;border-radius:2px}
+.reel-card .photograph-window img{width:100%;height:100%;object-fit:cover;object-position:50% 48%;border-radius:0}
+
+/* The event's own warm palette extends into an abstract folded-paper backdrop. */
+.case-figma{background:#dce6d6 url('assets/card-paper-folds.svg') center/cover}
+.reel-card.figma .reel-image{display:block;background:#dce6d6}
+.poster-window{position:absolute;top:5%;left:50%;height:90%;width:auto;aspect-ratio:800/1107;max-width:88%;transform:translateX(-50%) rotate(-1.6deg);border-radius:4px;overflow:hidden;box-shadow:7px 17px 29px -8px #42544960,0 0 0 1px #fff9}
+.reel-card .poster-window img{width:100%;height:100%;object-fit:contain;background:none}
+
+/* A tightly framed living-room television makes the broadcast context visible. */
+.case-autodesk{background:#cfc0ab}
+.tv-room{position:absolute;left:50%;top:50%;width:100%;aspect-ratio:3/2;transform:translate(-50%,-50%)}
+.reel-card .tv-room-photo{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:fill;background:none;pointer-events:none}
+.tv-display{position:absolute;left:9.24479167%;top:9.27734375%;width:81.640625%;height:64.6484375%;overflow:hidden;background:#000;border-radius:1px;box-shadow:inset 0 0 0 1px #0008}
+.tv-display video{display:block;width:100%;height:100%;object-fit:cover;border:0;background:#000;pointer-events:none}
+.tv-display:after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#ffffff0a,transparent 45%,#00000008);pointer-events:none}
+.award-window{position:absolute;bottom:13px;right:15px;display:flex;align-items:center;gap:7px;padding:7px 9px;border:1px solid #ffffff19;border-radius:20px;background:#1d1a1775;backdrop-filter:blur(14px);color:#f2ece3;font:400 8px/1.15 -apple-system,BlinkMacSystemFont,Arial,sans-serif}
+.award-publication{font-style:italic;font-weight:700;letter-spacing:-.04em;opacity:.8}.award-window h2{margin:0;font:inherit}.award-window p{display:none}
+
+@media(max-width:760px){
+ .reel-track{gap:108px;padding:max(30px,calc((100svh - 80vw) / 2)) 0}
+ .reel-card.film,.reel-card.campaign,.reel-card.photography,.reel-card.figma,.reel-card.autodesk{width:clamp(220px,80vw,380px);height:auto;aspect-ratio:1;--card-radius:20px}
+ .reel-card.film,.reel-card.autodesk{aspect-ratio:1.51}
+ .reel-card.photography{aspect-ratio:.8}.reel-card.figma{aspect-ratio:10/11}
+ .project-caption{font-size:9px;padding:7px 9px;bottom:12px;left:14px}.card-play{bottom:13px;left:14px}.card-play svg{width:12px;height:15px}.film .project-caption,.autodesk .project-caption{left:35px}
+ .media-toolbar{height:15px;padding:0 6px;gap:3px}.media-toolbar i{width:4px;height:4px}.media-toolbar span{font-size:5px}.reel-card .preview-window>img,.film .preview-window iframe{top:15px;height:calc(100% - 15px)}
+ .campaign-screen{border-radius:19px}.campaign-phone-top{height:22px;padding:8px 10px 0;font-size:5px}.campaign-social-header{height:25px;padding:3px 6px}.campaign-social-header b{font-size:11px;line-height:13px}.campaign-social-header>span:nth-child(2){font-size:5px;padding:4px}.campaign-social-header>span:last-child{font-size:12px}.campaign-feed-window{height:calc(100% - 72px)}.campaign-phone-bottom{font-size:9px;padding:5px 9px 10px}.campaign-phone-bottom:after{width:38px;height:2px;bottom:4px}
+ .photograph-window{inset:20px 20px 25px;padding:6px 6px 13px}.award-window{bottom:10px;right:10px;font-size:6px;gap:5px;padding:6px 7px}
+}
+@media(max-width:360px){.campaign-screen{border-radius:15px}.campaign-phone-top{height:19px;padding:7px 8px 0}.campaign-social-header{height:22px}.campaign-feed-window{height:calc(100% - 64px)}}
+@media(prefers-reduced-motion:reduce){.campaign-feed-track{animation:none}.campaign-phone,.photograph-window{transform:none}.poster-window{transform:translateX(-50%)}.project-caption{transition:none}}

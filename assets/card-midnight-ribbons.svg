@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640">
+<defs>
+ <linearGradient id="ink" x2="1" y2="1"><stop stop-color="#131316"/><stop offset=".6" stop-color="#050608"/><stop offset="1" stop-color="#12131c"/></linearGradient>
+ <linearGradient id="ribbon" x1="0" y1="0" x2="1" y2=".4"><stop stop-color="#09090e"/><stop offset=".38" stop-color="#120d23"/><stop offset=".57" stop-color="#b00d4d"/><stop offset=".64" stop-color="#ed6884"/><stop offset=".7" stop-color="#381547"/><stop offset=".84" stop-color="#09162b"/><stop offset="1" stop-color="#03050a"/></linearGradient>
+ <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#411127"/><stop offset=".5" stop-color="#e32042"/><stop offset=".58" stop-color="#f0837c"/><stop offset=".68" stop-color="#151735"/><stop offset="1" stop-color="#061621"/></linearGradient>
+ <filter id="soft"><feGaussianBlur stdDeviation="9"/></filter>
+</defs>
+<path fill="url(#ink)" d="M0 0h960v640H0z"/>
+<g filter="url(#soft)">
+ <path fill="url(#ribbon)" d="M125-230C285 85 416 234 590 347S937 540 1080 821L1112 505C981 350 763 191 634 112S402-119 356-253Z" opacity=".9"/>
+ <path fill="url(#edge)" d="M-210 82C-58 165 114 296 176 385S311 602 495 712L307 760C180 620 72 471 24 400S-65 241-228 203Z" opacity=".7"/>
+ <path fill="url(#ribbon)" d="M595-200C741-20 720 63 825 170S1010 318 1107 438L1182 168C1034 76 1007-45 860-225Z"/>
+</g>
+</svg>

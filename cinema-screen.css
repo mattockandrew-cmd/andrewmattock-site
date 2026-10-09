@@ -1,0 +1,20 @@
+/* A measured projection plane inside the generated Palladium screening setting. */
+.case-film,.scene-invision{background:#160908}
+.cinema-room{position:absolute;left:50%;top:50%;width:120%;aspect-ratio:3/2;transform:translate(-50%,-50%)}
+.reel-card .cinema-room-photo,.cinema-room-photo{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:fill;background:none}
+.cinema-screen{position:absolute;left:22.9817708333%;top:19.921875%;width:54.1666666667%;height:44.921875%;overflow:hidden;background:#121212}
+.cinema-scaling{position:absolute;left:0;top:0;width:832px;height:460px;transform:scale(var(--projection-scale,.4));transform-origin:0 0}
+.projection-plane,.reel-card .preview-window.projection-plane{position:absolute;left:0;top:0;width:832px;height:468px;aspect-ratio:auto;transform:matrix3d(0.972355769231,0,0,0,-0.023504273504,0.955734303090,0,-0.000059068869,0,0,1,0,11,0,0,1);transform-origin:0 0;border-radius:0;box-shadow:none;overflow:hidden;background:#121212}
+.reel-card .projection-plane>img,.projection-plane>.cinema-poster{position:absolute;inset:0;display:block;width:100%;height:100%;max-width:none;object-fit:cover;background:#121212;border-radius:0}
+.reel-card.film .projection-plane iframe,.projection-plane .film-embed,.projection-plane .film-embed iframe{position:absolute;inset:0;left:0;top:0;width:100%;height:100%;border:0;pointer-events:none}
+.screening-caption{position:absolute;right:14px;bottom:13px;z-index:4;padding:7px 10px;border-radius:20px;background:#140e0bbb;backdrop-filter:blur(12px);border:1px solid #e1c9a51a;color:#e9dbca;font:400 8px/1.2 -apple-system,BlinkMacSystemFont,Arial,sans-serif;pointer-events:none}
+.scene-invision .cinema-room{width:100%}.scene-invision .screening-caption{right:4.3vw;bottom:110px;font-size:11px}
+@media(max-width:760px){.screening-caption{font-size:6px;right:10px;bottom:10px;padding:6px 8px}}
+@media(max-width:700px){.scene-invision .cinema-room{width:120%}.scene-invision .screening-caption{right:22px;bottom:160px;font-size:9px}}
+
+/* Keep the live projection above its still-image fallback. */
+.reel-card .projection-plane>img,.projection-plane>.cinema-poster{z-index:0}
+.reel-card.film .projection-plane iframe,.projection-plane .film-embed{z-index:1}
+
+.screening-caption .screening-credit{display:block;margin-bottom:4px;font-size:10px;line-height:1.3;font-weight:500;color:#fff5e8}
+@media(max-width:760px){.screening-caption .screening-credit{font-size:8px;margin-bottom:3px}}

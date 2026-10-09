@@ -1,29 +1,21 @@
-Andrew Mattock — independent website
+Andrew Mattock — portfolio
 
 Live site: https://www.andrewmattock.com/
 Repository: https://github.com/mattockandrew-cmd/andrewmattock-site
 
-GitHub Pages publishes the main branch from the repository root. Changes
-committed to main are deployed automatically; no build command is needed.
-Open index.html to view the site locally. Keep the CNAME file when updating.
-Squarespace manages the domain and its DNS records. Email remains on Google.
+GitHub Pages publishes main from the repository root. No build step needed.
+Keep CNAME and .nojekyll when updating. Domain DNS and email are unchanged.
 
-Files
-index.html: site text, navigation, links, and metadata
-styles.css: typography, layout, responsive rules, and hover effects
-script.js: desktop scroll highlighting and image previews
-assets/: the original website’s images and self-hosted font files
-licenses/: original SIL Open Font License notices for Inter and Silkscreen
-robots.txt and sitemap.xml: indexing metadata for www.andrewmattock.com
-.nojekyll: serves the static files directly on GitHub Pages
-CNAME: preserves the custom domain on GitHub Pages
+The V2 design presents Design Disruptors (Associate Producer), Apollo campaigns
+and emails in an interactive phone, the Autodesk TV commercial, Apollo demo
+and SEO walkthroughs in a MacBook, and RevFest ’26 — Headline Speaker.
+Desktop uses the perspective carousel. Mobile uses normal document scrolling,
+40px card gaps, 20px gutters, and cards beginning 88px below the page top.
+All local artwork, fonts and font licenses accompany the site. The real film
+trailer loads through Vimeo; the other animations are local presentation UI.
+Only visible video/phone/browser previews play. Reduced motion is supported.
 
-The website uses no third-party JavaScript, analytics, package dependencies,
-Framer services, or external font/image requests. The biography reflects
-Andrew's role at Figma and 12+ years of experience. The read.cv link is removed.
-InVision links to the Design Disruptors film on Vimeo; Figma links to figma.com.
-
-Inter Display is the original light Latin webfont (version 4.0).
-Silkscreen is the original regular Latin webfont (version 1.0).
-Their licenses accompany this website. Existing site images are retained
-for Andrew’s own website; third-party brands retain their rights.
+Demo result: 40% increase in form fill rate.
+Programmatic SEO result: 1M unique visitors per month.
+Design Disruptors: screened across 60+ cities worldwide, $40M+ in Pipeline.
+Metrics were provided by Andrew.

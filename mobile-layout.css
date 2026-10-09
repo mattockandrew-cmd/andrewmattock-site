@@ -1,0 +1,23 @@
+/* Mobile uses document scrolling, with one consistent spacing system. */
+@media(max-width:760px){
+  .hero{height:auto;min-height:0;overflow:visible}
+  .hero .reel-window{position:relative;inset:auto;overflow:visible;overscroll-behavior:auto;touch-action:pan-y}
+  .hero .reel-track{width:100%;height:auto;flex-direction:column;align-items:center;gap:40px;padding:88px 0 24px;box-sizing:border-box}
+  .hero .reel-card{width:min(420px,calc(100vw - 40px));height:auto;flex:none;transform:none;will-change:auto;scroll-margin-top:24px}
+  .hero .reel-card.film,.hero .reel-card.autodesk{aspect-ratio:1.51}
+  .hero .reel-card.campaign{aspect-ratio:1}
+  .hero .reel-card.web-experiences{aspect-ratio:16/11}
+  .hero .reel-card.figma{aspect-ratio:10/11}
+  .hero .reel-card[data-clone="true"]{display:none}
+  .gallery-bottom-fade{display:none}
+  .gallery-scroll-cue{position:relative;left:auto;bottom:auto;transform:none;width:fit-content;max-width:calc(100% - 40px);margin:0 auto 16px}
+  main.container,footer.container{width:calc(100% - 40px)}
+  main.container{padding-top:24px;padding-bottom:32px}
+  main .intro{margin-bottom:32px}
+  #about .story{margin-bottom:28px}
+  .phone-controls button{min-height:44px;min-width:44px;font-size:11px}
+  .web-flow-controls button{min-height:44px;min-width:54px;font-size:11px}
+  .screening-caption{font-size:9px;line-height:1.4;max-width:calc(100% - 50px);border-radius:12px}
+  .screening-caption .screening-credit{font-size:10px}
+  .award-window{font-size:9px;line-height:1.4}
+}
