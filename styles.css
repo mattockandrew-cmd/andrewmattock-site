@@ -100,7 +100,7 @@ dialog{color:#fff;border:none;border-radius:16px;background:#101010;width:min(70
 #about .pill--autodesk{--brand-background:#000}
 #about .pill--autodesk img{width:1.29em}
 #about .pill--invision{--brand-background:#cc475f}
-#about .pill--invision img{width:2.45em}
+#about .pill--invision img{width:2.15em}
 #about .pill--figma{--brand-background:#f0ebff}
 #about .pill--figma img{width:.267em;height:.4em}
 #about .pill-brand-lockup{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:.1em;padding:0 .18em}
