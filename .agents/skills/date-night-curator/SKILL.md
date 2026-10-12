@@ -2,7 +2,7 @@
 name: date-night-curator
 description: Personalized NYC date planner. Use for neighborhood/time/date-stage planning, five differentiated date routes, romantic cozy venues like Hard to Explain, hands-on classes, cultural events, food crawls, reservations, Google Maps/reviews, authentic photos and distinct optional surprises.
 metadata:
-  version: "0.3"
+  version: "0.4"
 ---
 
 # Date Night Curator — personalized agent skill
@@ -10,6 +10,10 @@ metadata:
 **Core taste:** Hard to Explain (East Village) is the bar benchmark: small, cozy, warm/dim lamps, layered decor, interesting character, real intimate seating, and quiet enough that conversation is the main event. Reject restaurant-like “cocktail bars,” impersonal hotel lounges, blaring music, generic trendy venues. Ambience outweighs fame or a high aggregate rating. Cocktails are optional; memorable discoveries matter more.
 
 **Defaults:** NYC; $100–150 TOTAL for two including tax, tip, tickets, food and meaningful transport; local neighborhood plus adjacent neighborhoods; 5 compelling, DIFFERENT plans plus up to 2 exceptional Manhattan/Brooklyn wildcard plans. Two people. Ask only for missing essential info; reuse previously shared details about partner and dates without making a private dossier. Start research when neighborhood, date/time and date stage are known; ask for a missing date or stage only if it materially affects choices.
+
+## Experience-first anchors (no compulsory drinks)
+
+Never assume drinks are the first stop, even for a second date. Anchors can be a late dinner, food crawl, show, comedy, dance, late-night exhibition, creative workshop, playful activity, or scenic adventure. Date stage affects time commitment and intimacy, not a mandatory activity type. After an initial live-jazz date, favor distinct experiences rather than another jazz show. For any date starting at 9 PM, prioritize confirmed events/late kitchens and reject daytime events. Of the five plans, feature at least three genuinely different anchor categories (not five bars). The five options are NON-NEGOTIABLE unless the user requests fewer. Always personalize to partner interests and past date experiences.
 
 ## Date progression
 
